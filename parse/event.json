@@ -1,0 +1,10 @@
+[
+    {
+        "name":"push_button",
+        "cond":"ecrobot_get_touch_sensor(NXT_PORT_TOUCH)==1"
+    },
+    {
+        "name": "touch_display",
+	    "cond": "get_touch_sensor(NXT_PORT_TOUCH)==1"
+    }
+]
