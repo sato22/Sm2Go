@@ -1,46 +1,47 @@
 {
-"State":[
-    {
-        "name":      "Heat"
-    },
-    {
-        "name":      "Unheat"
-    },
-    {
-        "name":      "Stop"
-    }
-],
-"Event":[
-    {
-        "name":     "higher_limit"
-    },
-    {
-        "name":     "lower_limit"
-    },
-    {
-        "name":     "power_off"
-    }
-],
-"Transition":[
-    {
-        "src":      "Heat",
-        "dest":     "Unheat",
-        "event":    "higher_limit"
-    },
-    {
-        "src":      "Unheat",
-        "dest":     "Heat",
-        "event":    "lower_limit"
-    },
-    {
-        "src":      "Heat",
-        "dest":     "Stop",
-        "event":    "power_off"
-    },
-    {
-        "src":      "Unheat",
-        "dest":     "Stop",
-        "event":    "power_off"
-    }
+    "Initial":      "Heat",    
+    "State":[
+        {
+            "name":      "Heat"
+        },
+        {
+            "name":      "Unheat"
+        },
+        {
+            "name":      "Stop"
+        }
+    ],
+    "Event":[
+        {
+            "name":     "higher_limit"
+        },
+        {
+            "name":     "lower_limit"
+        },
+        {
+            "name":     "power_off"
+        }
+    ],
+    "Transition":[
+        {
+            "src":      "Heat",
+            "dest":     "Unheat",
+            "event":    "higher_limit"
+        },
+        {
+            "src":      "Unheat",
+            "dest":     "Heat",
+            "event":    "lower_limit"
+        },
+        {
+            "src":      "Heat",
+            "dest":     "Stop",
+            "event":    "power_off"
+        },
+        {
+            "src":      "Unheat",
+            "dest":     "Stop",
+            "event":    "power_off"
+        }
     ]
 }

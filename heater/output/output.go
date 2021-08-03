@@ -96,5 +96,8 @@ func main() {
 	// var Unheat State = Unheat
 	// var Stop State = Stop
 	var eod Eod = Entry
-	power_off(Heat, eod)
+
+	var current_state State = Heat
+
+	power_off(current_state, eod)
 }

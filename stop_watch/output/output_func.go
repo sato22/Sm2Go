@@ -14,7 +14,6 @@ func Wait_Entry() {
 
 func Run_Entry() {
 	// Processing performed in the "Entry" state of the "Run" state.
-	fmt.Println("Wait_Do() is executed.")
 }
 
 func Stop_Entry() {
@@ -23,6 +22,7 @@ func Stop_Entry() {
 
 func Wait_Do() {
 	// Processing performed in the "Do" state of the "Wait" state.
+	fmt.Println("Wait_Do() is executed.")
 }
 
 func Run_Do() {
@@ -35,6 +35,7 @@ func Stop_Do() {
 
 func push_button_Cond() bool {
 	// Please write the conditions under which a state transitions
+	fmt.Println("push_button_Cond() is executed.")
 	return true
 }
 

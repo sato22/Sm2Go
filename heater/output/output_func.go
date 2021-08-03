@@ -4,11 +4,13 @@
 package main // write package name
 
 import (
-// write about import
+	// write about import
+	"fmt"
 )
 
 func Heat_Entry() {
 	// Processing performed in the "Entry" state of the "Heat" state.
+	fmt.Println("Heat_Entry() is executed")
 }
 
 func Unheat_Entry() {
@@ -21,6 +23,7 @@ func Stop_Entry() {
 
 func Heat_Do() {
 	// Processing performed in the "Do" state of the "Heat" state.
+	fmt.Println("Heat_Do() is executed")
 }
 
 func Unheat_Do() {
@@ -43,5 +46,6 @@ func lower_limit_Cond() bool {
 
 func power_off_Cond() bool {
 	// Please write the conditions under which a state transitions
+	fmt.Println("power_off_Cond() is executed")
 	return true
 }

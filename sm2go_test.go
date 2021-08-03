@@ -287,7 +287,7 @@ func TestWriteJson(t *testing.T) {
 	// jsonファイル読み込みのテスト
 
 	// state.json読み込み
-	states, err := ioutil.ReadFile("./heater/heater.json")
+	states, err := ioutil.ReadFile("./stop_watch/stop_watch.json")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -302,7 +302,7 @@ func TestWriteJson(t *testing.T) {
 	write_package()
 	write_enum(sm.States)
 	write_event(sm.Transitions)
-	write_main(sm.States)
+	write_main(sm.States, sm.Initial)
 	fmt.Println("------------------------------　output_func.go　-----------------------------------")
 	write_func(sm.States, sm.Events)
 }

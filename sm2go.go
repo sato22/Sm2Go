@@ -14,6 +14,7 @@ type StateMent struct {
 	States      []State      `json:"State"`
 	Events      []Event      `json:"Event"`
 	Transitions []Transition `json:"Transition"`
+	Initial     string       `json:"Initial"`
 }
 
 type State struct {
@@ -142,7 +143,7 @@ func write_func(state_list []State, event_list []Event) {
 
 }
 
-func write_main(state_list []State) {
+func write_main(state_list []State, initial string) {
 	fmt.Println("/*")
 
 	fmt.Println("func main() {")
@@ -150,6 +151,7 @@ func write_main(state_list []State) {
 		fmt.Printf("var %s State = %s\n", state.Name, state.Name)
 	}
 	fmt.Println("var eod Eod = Entry")
+	fmt.Printf("var current_state State = %s\n", initial)
 	fmt.Println("}")
 	fmt.Println("*/")
 }

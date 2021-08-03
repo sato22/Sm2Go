@@ -1,38 +1,39 @@
 {
-"State":[
-    {
-        "name":      "Wait"
-    },
-    {
-        "name":      "Run"
-    },
-    {
-        "name":      "Stop"
-    }
-],
-"Event":[
-    {
-        "name":     "push_button"
-    },
-    {
-        "name":     "touch_display"
-    }
-],
-"Transition":[
-    {
-        "src":      "Wait",
-        "dest":     "Run",
-        "event":    "push_button"
-    },
-    {
-        "src":      "Run",
-        "dest":     "Stop",
-        "event":    "push_button"
-    },
-    {
-        "src":      "Stop",
-        "dest":     "Run",
-        "event":    "touch_display"
-    }
+    "Initial":      "Wait",
+    "State":[
+        {
+            "name":      "Wait"
+        },
+        {
+            "name":      "Run"
+        },
+        {
+            "name":      "Stop"
+        }
+    ],
+    "Event":[
+        {
+            "name":     "push_button"
+        },
+        {
+            "name":     "touch_display"
+        }
+    ],
+    "Transition":[
+        {
+            "src":      "Wait",
+            "dest":     "Run",
+            "event":    "push_button"
+        },
+        {
+            "src":      "Run",
+            "dest":     "Stop",
+            "event":    "push_button"
+        },
+        {
+            "src":      "Stop",
+            "dest":     "Run",
+            "event":    "touch_display"
+        }
     ]
 }

@@ -1,6 +1,7 @@
 // Please run "gofmt -w /path/to/output.go"
+// go run *.go
 
-package main // input package name
+package main // write package name
 
 import (
 	// write about import
@@ -73,9 +74,11 @@ func touch_display(state State, eod Eod) {
 }
 
 func main() {
-	var wait State = Wait
-	// var run State = Run
-	// var stop State = Stop
+	var Wait State = Wait
+	// var Run State = Run
+	// var Stop State = Stop
 	var eod Eod = Entry
-	push_button(wait, eod)
+	var current_state State = Wait
+
+	push_button(current_state, eod)
 }
