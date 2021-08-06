@@ -283,7 +283,8 @@ func TestWrite(t *testing.T) {
 }
 */
 
-func TestWriteJson(t *testing.T) {
+/*
+func TestWriteStopWatch(t *testing.T) {
 	// jsonファイル読み込みのテスト
 
 	// state.json読み込み
@@ -302,7 +303,38 @@ func TestWriteJson(t *testing.T) {
 	write_package()
 	write_enum(sm.States)
 	write_event(sm.Transitions)
-	write_main(sm.States, sm.Initial)
-	fmt.Println("------------------------------　output_func.go　-----------------------------------")
+	write_init(sm.Initial)
+	fmt.Println("------------------------------　output_edit.go　-----------------------------------")
+	write_package_func()
 	write_func(sm.States, sm.Events)
+	write_scan()
+	write_main()
+}
+*/
+
+func TestWriteHeater(t *testing.T) {
+	// jsonファイル読み込みのテスト
+
+	// state.json読み込み
+	states, err := ioutil.ReadFile("./heater/heater.json")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var sm StateMent
+	err = json.Unmarshal(states, &sm)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Println("------------------------------　output.go　-----------------------------------")
+	write_package()
+	write_enum(sm.States)
+	write_event(sm.Transitions)
+	write_init(sm.Initial)
+	fmt.Println("------------------------------　output_edit.go　-----------------------------------")
+	write_package_func()
+	write_func(sm.States, sm.Events)
+	write_scan()
+	write_main()
 }

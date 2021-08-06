@@ -14,9 +14,6 @@
     "Event":[
         {
             "name":     "push_button"
-        },
-        {
-            "name":     "touch_display"
         }
     ],
     "Transition":[
@@ -32,8 +29,8 @@
         },
         {
             "src":      "Stop",
-            "dest":     "Run",
-            "event":    "touch_display"
+            "dest":     "Wait",
+            "event":    "push_button"
         }
     ]
 }
