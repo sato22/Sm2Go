@@ -1,15 +1,17 @@
 // Please edit this file
+// Please run "gofmt -w /path/to/output.go"
 // go run *.go
 
 package main
 
 import (
 	"fmt"
-	"time"
 )
 
+var count int
+
 func Wait_Entry() {
-	// nothing to do
+	count = 0
 }
 
 func Wait_Do() {
@@ -25,7 +27,7 @@ func Run_Entry() {
 }
 
 func Run_Do() {
-	// nothing to do
+	count++
 }
 
 func Run_Exit() {
@@ -33,7 +35,7 @@ func Run_Exit() {
 }
 
 func Stop_Entry() {
-	// nothing to do
+	fmt.Println(count)
 }
 
 func Stop_Do() {
@@ -56,10 +58,10 @@ func push_button_Cond() bool {
 func main() {
 	go func() {
 		for {
-			time.Sleep(1 * time.Millisecond)
 			task1()
 		}
 	}()
+
 	for {
 		fmt.Scan(&input)
 		if input == "q" {

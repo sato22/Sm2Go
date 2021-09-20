@@ -88,11 +88,15 @@ func scan(scanner *bufio.Scanner) {
 }
 
 func main() {
+	go func() {
+		time.Sleep(1 * time.Millisecond)
+		state_transition()
+	}()
 	scanner := bufio.NewScanner(os.Stdin)
+
 	for {
-		time.Sleep(100 * time.Millisecond) // Change according to specifications
-		go state_transition()
-		go scan(scanner)
+		time.Sleep(1 * time.Millisecond) // Change according to specifications
+		scan(scanner)
 		if current_state == Stop {
 			fmt.Println("quit")
 			break

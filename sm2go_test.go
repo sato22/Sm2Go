@@ -283,7 +283,6 @@ func TestWrite(t *testing.T) {
 }
 */
 
-/*
 func TestWriteStopWatch(t *testing.T) {
 	// jsonファイル読み込みのテスト
 
@@ -305,13 +304,12 @@ func TestWriteStopWatch(t *testing.T) {
 	write_event(sm.Transitions)
 	write_init(sm.Initial)
 	fmt.Println("------------------------------　output_edit.go　-----------------------------------")
-	write_package_func()
+	write_package_edit()
 	write_func(sm.States, sm.Events)
-	write_scan()
 	write_main()
 }
-*/
 
+/*
 func TestWriteHeater(t *testing.T) {
 	// jsonファイル読み込みのテスト
 
@@ -338,3 +336,4 @@ func TestWriteHeater(t *testing.T) {
 	write_scan()
 	write_main()
 }
+*/

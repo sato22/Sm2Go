@@ -42,7 +42,7 @@ func state_transition() {
 				fmt.Println("State is changed: Heat to Unheat")
 				eod = Entry
 			}
-			if power_off_Cond() {
+			if power_off_Cond() { // else if
 				current_state = Stop
 				fmt.Println("State is changed: Heat to Stop")
 				eod = Entry
