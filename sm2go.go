@@ -51,7 +51,7 @@ func write_package(f io.Writer) {
 	fmt.Fprintln(f, "")
 }
 
-func write_enum(state_list []*State, f io.Writer) {
+func write_enum(f io.Writer, state_list []*State) {
 	// enum宣言
 	fmt.Fprintln(f, "type State int")
 	fmt.Fprintln(f, "const (")
@@ -76,7 +76,7 @@ func write_enum(state_list []*State, f io.Writer) {
 	fmt.Fprintln(f, "")
 }
 
-func write_event(transition_list []*Transition, f io.Writer) {
+func write_event(f io.Writer, transition_list []*Transition) {
 	// 状態ごとの関数を作成
 	fmt.Fprintln(f, "func task1() {")
 	fmt.Fprintln(f, "switch current_state {")
@@ -98,7 +98,7 @@ func write_event(transition_list []*Transition, f io.Writer) {
 			if state_name == transition.Src {
 				fmt.Fprintf(f, "if %s_Cond() {\n", transition.Event.Name)
 				fmt.Fprintf(f, "current_state = %s\n", transition.Dest.Name)
-				fmt.Fprintf(f, "fmt.Fprintln(\"State is changed: %s to %s\")\n", transition.Src.Name, transition.Dest.Name)
+				fmt.Fprintf(f, "fmt.Println(\"State is changed: %s to %s\")\n", transition.Src.Name, transition.Dest.Name)
 				fmt.Fprintln(f, "eod = Entry")
 				fmt.Fprintln(f, "}") // if event_Cond()
 			}
@@ -116,7 +116,7 @@ func write_event(transition_list []*Transition, f io.Writer) {
 	fmt.Fprintln(f, "")
 }
 
-func write_init(initial *State, f io.Writer) {
+func write_init(f io.Writer, initial *State) {
 	fmt.Fprintln(f, "func init() {")
 	fmt.Fprintf(f, "current_state = %s\n", initial.Name)
 	fmt.Fprintln(f, "eod = Entry")
@@ -141,7 +141,7 @@ func write_package_edit(fe io.Writer) {
 	fmt.Fprintln(fe, "")
 }
 
-func write_func(state_list []*State, event_list []*Event, fe io.Writer) {
+func write_func(fe io.Writer, state_list []*State, event_list []*Event) {
 	for _, state := range state_list {
 		fmt.Fprintf(fe, "func %s_Entry() {\n", state.Name)
 		fmt.Fprintln(fe, "// nothing to do")
@@ -180,7 +180,7 @@ func write_main(fe io.Writer) {
 	fmt.Fprintln(fe, "for {")
 	fmt.Fprintln(fe, "fmt.Scan(&input)")
 	fmt.Fprintln(fe, "if input == \"q\" {")
-	fmt.Fprintln(fe, "fmt.Fprintln(\"quit\")")
+	fmt.Fprintln(fe, "fmt.Println(\"quit\")")
 	fmt.Fprintln(fe, "break")
 	fmt.Fprintln(fe, "}")
 	fmt.Fprintln(fe, "}")

@@ -38,7 +38,7 @@ func task1() {
 			Wait_Do()
 			if push_button_Cond() {
 				current_state = Run
-				fmt.Fprintln("State is changed: Wait to Run")
+				fmt.Println("State is changed: Wait to Run")
 				eod = Entry
 			}
 		}
@@ -51,7 +51,7 @@ func task1() {
 			Run_Do()
 			if push_button_Cond() {
 				current_state = Stop
-				fmt.Fprintln("State is changed: Run to Stop")
+				fmt.Println("State is changed: Run to Stop")
 				eod = Entry
 			}
 		}
@@ -64,7 +64,7 @@ func task1() {
 			Stop_Do()
 			if push_button_Cond() {
 				current_state = Wait
-				fmt.Fprintln("State is changed: Stop to Wait")
+				fmt.Println("State is changed: Stop to Wait")
 				eod = Entry
 			}
 		}

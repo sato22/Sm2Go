@@ -286,12 +286,12 @@ func TestSM2Go02(t *testing.T) {
 	for _, v := range result {
 		// ------------------------------　output.go　-----------------------------------
 		write_package(f)
-		write_enum(v.States, f)
-		write_event(v.Transitions, f)
-		write_init(v.Initial, f)
+		write_enum(f, v.States)
+		write_event(f, v.Transitions)
+		write_init(f, v.Initial)
 		// ------------------------------　output_edit.go　-----------------------------------
 		write_package_edit(fe)
-		write_func(v.States, v.Events, fe)
+		write_func(fe, v.States, v.Events)
 		write_main(fe)
 	}
 }
