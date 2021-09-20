@@ -1,38 +1,27 @@
-package parser
+package mxgraph
 
 import (
 	"fmt"
 )
 
 /*
-・1つ1つのステートを変換
-→ ステートの中にステートの構造を変換
-→ XML形式を変換
+【実装したもの】
+・基本的なステートマシン図の変換を実装　〇
+	→　 ・ステートマシン図の挙動をGo言語でどのように記述するか（sample.go, sample_edit.go）　〇
+		・sampleを基に，ソースコードを出力する処理を記述　〇
+・diagrams.netを用いて生成したXMLファイルから情報を取り出す　〇
+・ステートマシン図から生成されたxmlファイルを基にソースコードを生成　〇
+・二重構造のxmlファイルから情報を取り出す　〇
+
+【これからすること】
+・直接ファイルに出力する
+・二重構造の変換を実装
+	→　 ・ステートマシン図の挙動をGo言語でどのように記述するか（sample.go, sample_edit.go）
+		・sampleを基に，ソースコードを出力する処理を記述
 */
 
-type StateMent struct {
-	States      []State      `json:"State"`
-	Events      []Event      `json:"Event"`
-	Transitions []Transition `json:"Transition"`
-	Initial     string       `json:"Initial"`
-}
-
-type State struct {
-	Name string `json:"name"`
-}
-
-type Event struct {
-	Name string `json:"name"` // イベント名
-}
-
-type Transition struct {
-	Src   string `json:"src"`   // 現在のステート
-	Dest  string `json:"dest"`  // 遷移先
-	Event string `json:"event"` // イベント（矢印）
-}
-
-func remove(transition_list []Transition, state_name string) []Transition {
-	ret := make([]Transition, len(transition_list))
+func remove(transition_list []*Transition, state_name *State) []*Transition {
+	ret := make([]*Transition, len(transition_list))
 	i := 0
 
 	for _, transition := range transition_list {
@@ -61,7 +50,7 @@ func write_package() {
 	fmt.Println("")
 }
 
-func write_enum(state_list []State) {
+func write_enum(state_list []*State) {
 	// enum宣言
 	fmt.Println("type State int")
 	fmt.Println("const (")
@@ -86,29 +75,29 @@ func write_enum(state_list []State) {
 	fmt.Println("")
 }
 
-func write_event(transition_list []Transition) {
+func write_event(transition_list []*Transition) {
 	// 状態ごとの関数を作成
 	fmt.Println("func task1() {")
 	fmt.Println("switch current_state {")
 
 	for _, transition := range transition_list {
-		fmt.Printf("case %s:\n", transition.Src)
+		fmt.Printf("case %s:\n", transition.Src.Name)
 		state_name := transition.Src
 		// Entry状態での動作を記述
 		fmt.Println("if eod == Entry {")
-		fmt.Printf("%s_Entry()\n", transition.Src)
+		fmt.Printf("%s_Entry()\n", transition.Src.Name)
 		fmt.Println("eod = Do")
 		fmt.Println("}") // if eod == Entry
 
 		// Do状態での動作を記述
 		fmt.Println("if eod == Do {")
-		fmt.Printf("%s_Do()\n", transition.Src)
+		fmt.Printf("%s_Do()\n", transition.Src.Name)
 		// 遷移条件を列挙
 		for _, transition := range transition_list {
 			if state_name == transition.Src {
-				fmt.Printf("if %s_Cond() {\n", transition.Event)
-				fmt.Printf("current_state = %s\n", transition.Dest)
-				fmt.Printf("fmt.Println(\"State is changed: %s to %s\")\n", transition.Src, transition.Dest)
+				fmt.Printf("if %s_Cond() {\n", transition.Event.Name)
+				fmt.Printf("current_state = %s\n", transition.Dest.Name)
+				fmt.Printf("fmt.Println(\"State is changed: %s to %s\")\n", transition.Src.Name, transition.Dest.Name)
 				fmt.Println("eod = Entry")
 				fmt.Println("}") // if event_Cond()
 			}
@@ -126,9 +115,9 @@ func write_event(transition_list []Transition) {
 	fmt.Println("")
 }
 
-func write_init(initial string) {
+func write_init(initial *State) {
 	fmt.Println("func init() {")
-	fmt.Printf("current_state = %s\n", initial)
+	fmt.Printf("current_state = %s\n", initial.Name)
 	fmt.Println("eod = Entry")
 	fmt.Println("}")
 	fmt.Println("")
@@ -151,7 +140,7 @@ func write_package_edit() {
 	fmt.Println("")
 }
 
-func write_func(state_list []State, event_list []Event) {
+func write_func(state_list []*State, event_list []*Event) {
 	for _, state := range state_list {
 		fmt.Printf("func %s_Entry() {\n", state.Name)
 		fmt.Println("// nothing to do")

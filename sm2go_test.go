@@ -1,288 +1,11 @@
-package parser
+package mxgraph
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"testing"
 )
 
 /*
-func TestState(t *testing.T) {
-	// State構造体の確認
-	state := State{
-		Name:      "Wait",
-		EntryProg: "wait_test_EntryProg",
-		DoProg:    "wait_test_DoProg",
-		ExitProg:  "wait_test_ExitProg",
-	}
-
-	// State構造体を表示
-	fmt.Println(state)
-}
-
-func TestEvent(t *testing.T) {
-	// Event構造体の確認
-	event := Event{
-		Name: "push_button",
-		Cond: "ecrobot_get_touch_sensor(NXT_PORT_TOUCH)==1",
-	}
-
-	// Event構造体を表示
-	fmt.Println(event)
-}
-
-func TestTransition(t *testing.T) {
-	// Transition構造体の確認
-	current_state := State{
-		Name:      "Wait",
-		EntryProg: "wait_test_EntryProg",
-		DoProg:    "wait_test_DoProg",
-		ExitProg:  "wait_test_ExitProg",
-	}
-
-	next_state := State{
-		Name:      "Run",
-		EntryProg: "run_test_EntryProg",
-		DoProg:    "run_test_DoProg",
-		ExitProg:  "run_test_ExitProg",
-	}
-
-	eve := Event{
-		Name: "push_button",
-		Cond: "ecrobot_get_touch_sensor(NXT_PORT_TOUCH)==1",
-	}
-
-	trans := Transition{
-		src:   &current_state,
-		dest:  &next_state,
-		event: &eve,
-	}
-
-	// Transition構造体を表示
-	fmt.Println(trans)
-}
-
-func TestWriteEnum(t *testing.T) {
-	// write_enum関数のテスト
-	current_state := State{
-		Name:      "Wait",
-		EntryProg: "wait_test_EntryProg",
-		DoProg:    "wait_test_DoProg",
-		ExitProg:  "wait_test_ExitProg",
-	}
-
-	next_state := State{
-		Name:      "Run",
-		EntryProg: "run_test_EntryProg",
-		DoProg:    "run_test_DoProg",
-		ExitProg:  "run_test_ExitProg",
-	}
-
-	eve := Event{
-		Name: "push_button",
-		Cond: "ecrobot_get_touch_sensor(NXT_PORT_TOUCH)==1",
-	}
-
-	trans1 := Transition{
-		src:   &current_state,
-		dest:  &next_state,
-		event: &eve,
-	}
-
-	trans2 := Transition{
-		src:   &next_state,
-		dest:  &current_state,
-		event: &eve,
-	}
-
-	trans_list := []Transition{trans1, trans2}
-
-	write_enum(trans_list)
-}
-
-func TestRemove(t *testing.T) {
-	// remove関数のテスト
-	state_wait := State{
-		Name:      "Wait",
-		EntryProg: "wait_test_EntryProg",
-		DoProg:    "wait_test_DoProg",
-		ExitProg:  "wait_test_ExitProg",
-	}
-
-	state_run := State{
-		Name:      "Run",
-		EntryProg: "run_test_EntryProg",
-		DoProg:    "run_test_DoProg",
-		ExitProg:  "run_test_ExitProg",
-	}
-
-	state_stop := State{
-		Name:      "Stop",
-		EntryProg: "stop_test_EntryProg",
-		DoProg:    "stop_test_DoProg",
-		ExitProg:  "stop_test_ExitProg",
-	}
-
-	eve1 := Event{
-		Name: "push_button",
-		Cond: "ecrobot_get_touch_sensor(NXT_PORT_TOUCH)==1",
-	}
-
-	eve2 := Event{
-		Name: "touch_display",
-		Cond: "get_touch_sensor(NXT_PORT_TOUCH)==1",
-	}
-
-	// wait → run (eve1)
-	trans1 := Transition{
-		src:   &state_wait,
-		dest:  &state_run,
-		event: &eve1,
-	}
-
-	// run → stop (eve1)
-	trans2 := Transition{
-		src:   &state_run,
-		dest:  &state_stop,
-		event: &eve1,
-	}
-
-	// stop → run (eve2)
-	trans3 := Transition{
-		src:   &state_stop,
-		dest:  &state_run,
-		event: &eve2,
-	}
-
-	trans_list := []Transition{trans1, trans2, trans3}
-	fmt.Println(trans_list)
-
-	trans_list = remove(trans_list, "push_button")
-	fmt.Println(trans_list)
-}
-
-func TestWriteFunc(t *testing.T) {
-	// write_func関数のテスト
-	state_wait := State{
-		Name:      "Wait",
-		EntryProg: "wait_test_EntryProg",
-		DoProg:    "wait_test_DoProg",
-		ExitProg:  "wait_test_ExitProg",
-	}
-
-	state_run := State{
-		Name:      "Run",
-		EntryProg: "run_test_EntryProg",
-		DoProg:    "run_test_DoProg",
-		ExitProg:  "run_test_ExitProg",
-	}
-
-	state_stop := State{
-		Name:      "Stop",
-		EntryProg: "stop_test_EntryProg",
-		DoProg:    "stop_test_DoProg",
-		ExitProg:  "stop_test_ExitProg",
-	}
-
-	eve1 := Event{
-		Name: "push_button",
-		Cond: "ecrobot_get_touch_sensor(NXT_PORT_TOUCH)==1",
-	}
-
-	eve2 := Event{
-		Name: "touch_display",
-		Cond: "get_touch_sensor(NXT_PORT_TOUCH)==1",
-	}
-
-	// wait → run (eve1)
-	trans1 := Transition{
-		src:   &state_wait,
-		dest:  &state_run,
-		event: &eve1,
-	}
-
-	// run → stop (eve1)
-	trans2 := Transition{
-		src:   &state_run,
-		dest:  &state_stop,
-		event: &eve1,
-	}
-
-	// stop → run (eve2)
-	trans3 := Transition{
-		src:   &state_stop,
-		dest:  &state_run,
-		event: &eve2,
-	}
-
-	trans_list := []Transition{trans1, trans2, trans3}
-
-	write_func(trans_list)
-}
-
-func TestWrite(t *testing.T) {
-	// write_enum, write_func関数のテスト
-	state_wait := State{
-		Name:      "Wait",
-		EntryProg: "wait_test_EntryProg",
-		DoProg:    "wait_test_DoProg",
-		ExitProg:  "wait_test_ExitProg",
-	}
-
-	state_run := State{
-		Name:      "Run",
-		EntryProg: "run_test_EntryProg",
-		DoProg:    "run_test_DoProg",
-		ExitProg:  "run_test_ExitProg",
-	}
-
-	state_stop := State{
-		Name:      "Stop",
-		EntryProg: "stop_test_EntryProg",
-		DoProg:    "stop_test_DoProg",
-		ExitProg:  "stop_test_ExitProg",
-	}
-
-	eve1 := Event{
-		Name: "push_button",
-		Cond: "ecrobot_get_touch_sensor(NXT_PORT_TOUCH)==1",
-	}
-
-	eve2 := Event{
-		Name: "touch_display",
-		Cond: "get_touch_sensor(NXT_PORT_TOUCH)==1",
-	}
-
-	// wait → run (eve1)
-	trans1 := Transition{
-		src:   &state_wait,
-		dest:  &state_run,
-		event: &eve1,
-	}
-
-	// run → stop (eve1)
-	trans2 := Transition{
-		src:   &state_run,
-		dest:  &state_stop,
-		event: &eve1,
-	}
-
-	// stop → run (eve2)
-	trans3 := Transition{
-		src:   &state_stop,
-		dest:  &state_run,
-		event: &eve2,
-	}
-
-	trans_list := []Transition{trans1, trans2, trans3}
-
-	write_package()
-	write_enum(trans_list)
-	write_func(trans_list)
-}
-*/
-
 func TestWriteStopWatch(t *testing.T) {
 	// jsonファイル読み込みのテスト
 
@@ -308,32 +31,168 @@ func TestWriteStopWatch(t *testing.T) {
 	write_func(sm.States, sm.Events)
 	write_main()
 }
-
-/*
-func TestWriteHeater(t *testing.T) {
-	// jsonファイル読み込みのテスト
-
-	// state.json読み込み
-	states, err := ioutil.ReadFile("./heater/heater.json")
-	if err != nil {
-		panic(err.Error())
-	}
-
-	var sm StateMent
-	err = json.Unmarshal(states, &sm)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	fmt.Println("------------------------------　output.go　-----------------------------------")
-	write_package()
-	write_enum(sm.States)
-	write_event(sm.Transitions)
-	write_init(sm.Initial)
-	fmt.Println("------------------------------　output_edit.go　-----------------------------------")
-	write_package_func()
-	write_func(sm.States, sm.Events)
-	write_scan()
-	write_main()
-}
 */
+
+// xmlファイルの情報を出力するテスト
+func TestSM01(t *testing.T) {
+	data := []byte(`
+<mxGraphModel dx="1670" dy="994" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-9" target="EBAIrEwSQ_sO8G7dM4pI-10" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <object label="" type="initialstate" id="EBAIrEwSQ_sO8G7dM4pI-9">
+      <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;glass=0;sketch=0;fillColor=#000000;" parent="1" vertex="1">
+        <mxGeometry x="-630" y="100" width="30" height="30" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-10" target="EBAIrEwSQ_sO8G7dM4pI-12" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-18" value="push_button" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="EBAIrEwSQ_sO8G7dM4pI-15" vertex="1" connectable="0">
+      <mxGeometry x="0.3111" y="1" relative="1" as="geometry">
+        <mxPoint x="-19" y="-14" as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <object label="Wait" type="state" id="EBAIrEwSQ_sO8G7dM4pI-10">
+      <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;" parent="1" vertex="1">
+        <mxGeometry x="-510" y="75" width="130" height="80" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-12" target="EBAIrEwSQ_sO8G7dM4pI-13" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-21" value="push_button" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="EBAIrEwSQ_sO8G7dM4pI-16" vertex="1" connectable="0">
+      <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+        <mxPoint as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <object label="Run" type="state" id="EBAIrEwSQ_sO8G7dM4pI-12">
+      <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;" parent="1" vertex="1">
+        <mxGeometry x="-290" y="75" width="130" height="80" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-13" target="EBAIrEwSQ_sO8G7dM4pI-10" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-22" value="push_button" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="EBAIrEwSQ_sO8G7dM4pI-17" vertex="1" connectable="0">
+      <mxGeometry x="0.1286" y="-1" relative="1" as="geometry">
+        <mxPoint as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <object label="Stop" type="state" id="EBAIrEwSQ_sO8G7dM4pI-13">
+      <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;" parent="1" vertex="1">
+        <mxGeometry x="-410" y="220" width="130" height="80" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-19" target="EBAIrEwSQ_sO8G7dM4pI-10" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <object label="" type="note" id="EBAIrEwSQ_sO8G7dM4pI-19">
+      <mxCell style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;glass=0;sketch=0;fillColor=#ffffff;" parent="1" vertex="1">
+        <mxGeometry x="-410" y="-120" width="80" height="100" as="geometry" />
+      </mxCell>
+    </object>
+  </root>
+</mxGraphModel>
+
+`)
+	result := Parse(data)
+	for _, v := range result {
+		fmt.Println("--------------------------------------")
+		for _, x := range v.States {
+			fmt.Println(x)
+		}
+		for _, x := range v.Events {
+			fmt.Println(x)
+		}
+		for _, x := range v.Transitions {
+			fmt.Println(x.Src, x.Dest, x.Event)
+		}
+		fmt.Println(v.Initial)
+	}
+}
+
+// 図の情報（xmlファイル）からソースコードを出力するテスト
+func TestSM2Go01(t *testing.T) {
+	data := []byte(`
+<mxGraphModel dx="1670" dy="994" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-9" target="EBAIrEwSQ_sO8G7dM4pI-10" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <object label="" type="initialstate" id="EBAIrEwSQ_sO8G7dM4pI-9">
+      <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;glass=0;sketch=0;fillColor=#000000;" parent="1" vertex="1">
+        <mxGeometry x="-630" y="100" width="30" height="30" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-10" target="EBAIrEwSQ_sO8G7dM4pI-12" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-18" value="push_button" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="EBAIrEwSQ_sO8G7dM4pI-15" vertex="1" connectable="0">
+      <mxGeometry x="0.3111" y="1" relative="1" as="geometry">
+        <mxPoint x="-19" y="-14" as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <object label="Wait" type="state" id="EBAIrEwSQ_sO8G7dM4pI-10">
+      <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;" parent="1" vertex="1">
+        <mxGeometry x="-510" y="75" width="130" height="80" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-12" target="EBAIrEwSQ_sO8G7dM4pI-13" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-21" value="push_button" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="EBAIrEwSQ_sO8G7dM4pI-16" vertex="1" connectable="0">
+      <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+        <mxPoint as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <object label="Run" type="state" id="EBAIrEwSQ_sO8G7dM4pI-12">
+      <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;" parent="1" vertex="1">
+        <mxGeometry x="-290" y="75" width="130" height="80" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-13" target="EBAIrEwSQ_sO8G7dM4pI-10" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-22" value="push_button" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="EBAIrEwSQ_sO8G7dM4pI-17" vertex="1" connectable="0">
+      <mxGeometry x="0.1286" y="-1" relative="1" as="geometry">
+        <mxPoint as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <object label="Stop" type="state" id="EBAIrEwSQ_sO8G7dM4pI-13">
+      <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;" parent="1" vertex="1">
+        <mxGeometry x="-410" y="220" width="130" height="80" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="EBAIrEwSQ_sO8G7dM4pI-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-19" target="EBAIrEwSQ_sO8G7dM4pI-10" edge="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <object label="" type="note" id="EBAIrEwSQ_sO8G7dM4pI-19">
+      <mxCell style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;glass=0;sketch=0;fillColor=#ffffff;" parent="1" vertex="1">
+        <mxGeometry x="-410" y="-120" width="80" height="100" as="geometry" />
+      </mxCell>
+    </object>
+  </root>
+</mxGraphModel>
+
+`)
+
+	result := Parse(data)
+	for _, v := range result {
+		fmt.Println("------------------------------　output.go　-----------------------------------")
+		write_package()
+		write_enum(v.States)
+		write_event(v.Transitions)
+		write_init(v.Initial)
+		fmt.Println("------------------------------　output_edit.go　-----------------------------------")
+		write_package_edit()
+		write_func(v.States, v.Events)
+		write_main()
+	}
+
+}
