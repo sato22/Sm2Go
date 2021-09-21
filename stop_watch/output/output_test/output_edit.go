@@ -8,10 +8,8 @@ import (
 	"time"
 )
 
-var count int
-
 func Wait_Entry() {
-	count = 0
+	// nothing to do
 }
 
 func Wait_Do() {
@@ -27,7 +25,7 @@ func Run_Entry() {
 }
 
 func Run_Do() {
-	count++
+	// nothing to do
 }
 
 func Run_Exit() {
@@ -35,7 +33,7 @@ func Run_Exit() {
 }
 
 func Stop_Entry() {
-	fmt.Println(count)
+	// nothing to do
 }
 
 func Stop_Do() {
@@ -48,10 +46,6 @@ func Stop_Exit() {
 
 func push_button_Cond() bool {
 	// Please write the conditions under which a state transitions
-	if input == "p" {
-		input = ""
-		return true
-	}
 	return false
 }
 
