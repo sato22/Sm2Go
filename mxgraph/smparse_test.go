@@ -70,6 +70,9 @@ func TestSM01(t *testing.T) {
 </mxGraphModel>
 `)
 	result := Parse(data)
+
+	fmt.Printf("result type is %T\n", result)
+
 	for _, v := range result {
 		fmt.Println("--------------------------------------")
 		for _, x := range v.States {

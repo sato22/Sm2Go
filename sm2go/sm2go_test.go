@@ -1,4 +1,4 @@
-package mxgraph
+package sm2go
 
 import (
 	"fmt"
@@ -118,6 +118,7 @@ func TestSM2Go01(t *testing.T) {
 */
 
 // ソースコードをファイルに書き込むテスト(stop_watch)
+/*
 func TestSM2Go02(t *testing.T) {
 	data := []byte(`
 <mxGraphModel dx="1670" dy="994" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
@@ -211,6 +212,7 @@ func TestSM2Go02(t *testing.T) {
 		write_main(fe)
 	}
 }
+*/
 
 // ソースコードをファイルに書き込むテスト(ON_OFF)
 /*

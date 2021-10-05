@@ -1,4 +1,4 @@
-package mxgraph
+package sm2go
 
 import (
 	"bytes"
