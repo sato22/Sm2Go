@@ -1,9 +1,9 @@
 package main
 
 import (
-	"./sm2go"
 	"flag"
 	"fmt"
+	"github.com/rellab/sm2go/sm2go"
 	"io/ioutil"
 	"os"
 )
