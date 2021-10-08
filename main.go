@@ -1,9 +1,8 @@
 package main
 
 import (
-	"./sm2go"
+	"./sm2go" // github.com...
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -20,7 +19,6 @@ func main() {
 
 	if *infile != "" {
 		if xml, err := ioutil.ReadFile(*infile); err == nil {
-			fmt.Printf("err type is %T\n", err)
 			result = sm2go.Parse(xml)
 		} else {
 			panic(err)
