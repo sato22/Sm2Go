@@ -2,7 +2,7 @@ package sm2go
 
 import (
 	"fmt"
-	"os"
+	// "os"
 	"testing"
 )
 
@@ -35,7 +35,6 @@ func TestWriteStopWatch(t *testing.T) {
 */
 
 // 図の情報（xmlファイル）からソースコードを出力するテスト(stop_watch)
-/*
 func TestSM2Go01(t *testing.T) {
 	data := []byte(`
 <mxGraphModel dx="1670" dy="994" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
@@ -104,18 +103,28 @@ func TestSM2Go01(t *testing.T) {
 
 	result := Parse(data)
 	for _, v := range result {
-		fmt.Println("------------------------------　output.go　-----------------------------------")
-		write_package()
-		write_enum(v.States)
-		write_event(v.Transitions)
-		write_init(v.Initial)
-		fmt.Println("------------------------------　output_edit.go　-----------------------------------")
-		write_package_edit()
-		write_func(v.States, v.Events)
-		write_main()
+		// ------------------------------　output.go　-----------------------------------
+		writePackage()
+		writeEnum(v.States)
+		writeEvent(v.Transitions)
+		writeInit(v.Initial)
+		// ------------------------------　output_edit.go　-----------------------------------
+		writePackageEdit()
+		writeFunc(v.States, v.Events)
+		writeMain()
+	}
+
+  
+  fmt.Println("------------------------------　output.go　-----------------------------------")
+	for _, o := range oline {
+		fmt.Printf(o)
+	}
+  
+  fmt.Println("------------------------------　output_edit.go　-----------------------------------")
+	for _, oe := range oeline {
+		fmt.Printf(oe)
 	}
 }
-*/
 
 // ソースコードをファイルに書き込むテスト(stop_watch)
 /*

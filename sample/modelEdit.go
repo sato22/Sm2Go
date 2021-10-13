@@ -4,8 +4,8 @@
 package main
 
 import (
-"fmt"
-"time"
+	"fmt"
+	"time"
 )
 
 func Wait_Entry() {
