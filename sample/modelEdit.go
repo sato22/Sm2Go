@@ -1,67 +1,50 @@
 // Please edit this file
 // go run *.go
 
-package main
+package test
 
 import (
-	"fmt"
-	"time"
+//"fmt"
 )
 
-func Wait_Entry() {
+func waitEntry() {
 // nothing to do
 }
 
-func Wait_Do() {
+func waitDo() {
 // nothing to do
 }
 
-func Wait_Exit() {
+func waitExit() {
 // nothing to do
 }
 
-func Run_Entry() {
+func runEntry() {
 // nothing to do
 }
 
-func Run_Do() {
+func runDo() {
 // nothing to do
 }
 
-func Run_Exit() {
+func runExit() {
 // nothing to do
 }
 
-func Stop_Entry() {
+func stopEntry() {
 // nothing to do
 }
 
-func Stop_Do() {
+func stopDo() {
 // nothing to do
 }
 
-func Stop_Exit() {
+func stopExit() {
 // nothing to do
 }
 
-func push_button_Cond() bool {
+func pushButtonCond() bool {
 // Please write the conditions under which a state transitions
-return false
-}
-
-func main() {
-go func() {
-for {
-time.Sleep(1 * time.Millisecond)
-task1()
-}
-}()
-for {
-fmt.Scan(&input)
-if input == "q" {
-fmt.Println("quit")
-break
-}
-}
+return true
 }
 
