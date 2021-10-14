@@ -28,7 +28,6 @@ func main() {
 	// 入力ファイル（diagrams.netにて作成）の読み込み
 	if *infile != "" {
 		if xml, err := ioutil.ReadFile(*infile); err == nil {
-			// result := sm2go.Parse(xml)
 			oline, oeline, otline = sm2go.WriteAll(xml, name)
 		} else {
 			panic(err)
