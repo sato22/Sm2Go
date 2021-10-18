@@ -3,24 +3,20 @@
 package test
 
 import (
-"fmt"
+//"fmt"
 "testing"
 "time"
 )
 
 func TestStateTrans(t *testing.T) {
-go func() {
-for {
-time.Sleep(1 * time.Millisecond)
-task()
-}
-}()
-for {
-fmt.Scan(&input)
-if input == "q" {
-fmt.Println("quit")
-break
-}
-}
-}
+	// ステートの遷移を確認可能
+	go func() {
+	for {
+	time.Sleep(1 * time.Millisecond)
+	task()
+	}
+	}()
 
+	// goroutine
+	for{}
+}

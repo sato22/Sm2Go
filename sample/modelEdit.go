@@ -7,8 +7,12 @@ import (
 //"fmt"
 )
 
+// 図の状態名が変わったときにプログラムに対応させたい（中の処理はそのままで）
+
+
+
 func waitEntry() {
-// nothing to do
+	// hogehoge
 }
 
 func waitDo() {

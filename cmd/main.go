@@ -11,15 +11,24 @@ import (
 
 func main() {
 	infile := flag.String("i", "", "diagrams.net file for State Machine")
-	outfile := flag.String("o", "", "Output file (No edit)")
-	outfileEdit := flag.String("oe", "", "Output file (Edit)")
-	outfileTest := flag.String("ot", "", "Output file (Test)")
+	// outfile := flag.String("o", "", "Output file (No edit)")
+	// outfileEdit := flag.String("oe", "", "Output file (Edit)")
+	// outfileTest := flag.String("ot", "", "Output file (Test)")
 	flag.Parse()
 
 	// パッケージ名を指定
+	// デフォルトでmain，コマンドラインで指定
 	var name string
 	fmt.Println("--------Please enter the package name--------")
 	fmt.Scan(&name)
+
+	// package名はデフォルトでなし
+	// オプション指定しない
+
+	// packageディレクトリ直下	
+	// package_test.go
+	// package_base.go
+	// package_impl.go
 
 	var oline []string
 	var oeline []string
