@@ -11,24 +11,7 @@ import (
 
 func main() {
 	infile := flag.String("i", "", "diagrams.net file for State Machine")
-	// outfile := flag.String("o", "", "Output file (No edit)")
-	// outfileEdit := flag.String("oe", "", "Output file (Edit)")
-	// outfileTest := flag.String("ot", "", "Output file (Test)")
 	flag.Parse()
-
-	// パッケージ名を指定
-	// デフォルトでmain，コマンドラインで指定
-	var name string
-	fmt.Println("--------Please enter the package name--------")
-	fmt.Scan(&name)
-
-	// package名はデフォルトでなし
-	// オプション指定しない
-
-	// packageディレクトリ直下	
-	// package_test.go
-	// package_base.go
-	// package_impl.go
 
 	var oline []string
 	var oeline []string
@@ -37,60 +20,62 @@ func main() {
 	// 入力ファイル（diagrams.netにて作成）の読み込み
 	if *infile != "" {
 		if xml, err := ioutil.ReadFile(*infile); err == nil {
-			oline, oeline, otline = sm2go.WriteAll(xml, name)
+			oline, oeline, otline = sm2go.WriteAll(xml, os.Args[3])
 		} else {
 			panic(err)
 		}
 	}
 
-	// 出力ファイルの指定（編集しないファイル）
-	if *outfile != "" {
-		file, err := os.Create(*outfile)
+	// ディレクトリ生成
+	if err := os.MkdirAll(fmt.Sprintf("%s", os.Args[3]), 0777); err != nil {
+		panic(err)
+	}
+	
+	// package_base.go生成
+	base, err := os.Create(fmt.Sprintf("%s/%s_base.go", os.Args[3], os.Args[3]))
+	if err != nil {
+		panic(err)
+	}
+	defer base.Close()
+
+	// package_impl.go生成
+	impl, err := os.Create(fmt.Sprintf("%s/%s_impl.go", os.Args[3], os.Args[3]))
+	if err != nil {
+		panic(err)
+	}
+	defer impl.Close()
+
+	// package_test.go生成
+	test, err := os.Create(fmt.Sprintf("%s/%s_test.go", os.Args[3], os.Args[3]))
+	if err != nil {
+		panic(err)
+	}
+	defer test.Close()
+
+	// package_base.go
+	for _, o := range oline {
+		b := []byte(o)
+		_, err := base.Write(b)
 		if err != nil {
 			panic(err)
-		}
-		defer file.Close()
-		
-		for _, o := range oline {
-			b := []byte(o)
-			_, err := file.Write(b)
-			if err != nil {
-				panic(err)
-			}
 		}
 	}
 
-	// 出力ファイルの指定（要編集ファイル）
-	if *outfileEdit != "" {
-		fileEdit, err := os.Create(*outfileEdit)
+	// package_impl.go
+	for _, oe := range oeline{
+		b := []byte(oe)
+		_, err := impl.Write(b)
 		if err != nil {
 			panic(err)
-		}
-		defer fileEdit.Close()
-
-		for _, oe := range oeline{
-			b := []byte(oe)
-			_, err := fileEdit.Write(b)
-			if err != nil {
-				panic(err)
-			}
 		}
 	}
 
-	// 出力ファイルの指定（テスト用ファイル）
-	if *outfileTest != "" {
-		fileTest, err := os.Create(*outfileTest)
+	// package_test.go
+	for _, ot := range otline{
+		b := []byte(ot)
+		_, err := test.Write(b)
 		if err != nil {
 			panic(err)
-		}
-		defer fileTest.Close()
-
-		for _, ot := range otline{
-			b := []byte(ot)
-			_, err := fileTest.Write(b)
-			if err != nil {
-				panic(err)
-			}
 		}
 	}
 }
