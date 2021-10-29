@@ -107,11 +107,7 @@ func writeEvent(oline []string, transition_list []*Transition) []string {
 				oline = append(oline, "}\n") // if event_Cond()
 			}
 		}
-
-		transition_list = remove(transition_list, state_name) // 表示したtransitionをリストから削除
-		if len(transition_list) == 0 {
-			break
-		}
+	
 		oline = append(oline, "}\n") // if eod == Do
 
 		// Exit状態での動作を記述
@@ -119,9 +115,13 @@ func writeEvent(oline []string, transition_list []*Transition) []string {
 		oline = append(oline, fmt.Sprintf("%sExit()\n", strings.ToLower(transition.Src.Name)))
 		oline = append(oline, "eod = Entry\n")
 		oline = append(oline, "}\n") // if eod == Exit
+
+		transition_list = remove(transition_list, state_name) // 表示したtransitionをリストから削除
+		if len(transition_list) == 0 {
+			break
+		}
 	}
 	oline = append(oline, "}\n") // switch state
-	oline = append(oline, "}\n") // func
 	oline = append(oline, "}\n") // func
 	oline = append(oline, "\n")
 

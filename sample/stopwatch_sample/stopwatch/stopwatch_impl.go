@@ -1,5 +1,4 @@
 // Please edit this file
-// go run *.go
 
 package stopwatch
 
