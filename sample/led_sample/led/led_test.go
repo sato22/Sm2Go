@@ -1,6 +1,6 @@
 // This is a test file for testing state transitions
 
-package aircond
+package main_test
 
 import (
 	"sync"

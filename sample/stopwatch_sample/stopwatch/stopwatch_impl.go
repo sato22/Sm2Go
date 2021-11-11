@@ -7,42 +7,43 @@ import (
 )
 
 func waitEntry() {
-	// nothing to do
+// nothing to do
 }
 
 func waitDo() {
-	// nothing to do
+// nothing to do
 }
 
 func waitExit() {
-	// nothing to do
+// nothing to do
 }
 
 func runEntry() {
-	// nothing to do
+// nothing to do
 }
 
 func runDo() {
-	// nothing to do
+// nothing to do
 }
 
 func runExit() {
-	// nothing to do
+// nothing to do
 }
 
 func stopEntry() {
-	// nothing to do
+// nothing to do
 }
 
 func stopDo() {
-	// nothing to do
+// nothing to do
 }
 
 func stopExit() {
-	// nothing to do
+// nothing to do
 }
 
 func pushButtonCond() bool {
-	// Please write the conditions under which a state transitions
-	return true
+// Please write the conditions under which a state transitions
+return true
 }
+

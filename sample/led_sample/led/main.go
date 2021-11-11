@@ -1,14 +1,14 @@
-// This is a test file for testing state transitions
-
-package aircond
+package main
 
 import (
+	"machine"
 	"sync"
-	"testing"
 	"time"
 )
 
-func TestStateTrans(t *testing.T) {
+func main() {
+	led = machine.LED
+	led.Configure(machine.PinConfig{Mode: machine.PinOutput})
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
