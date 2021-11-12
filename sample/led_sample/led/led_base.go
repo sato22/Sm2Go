@@ -3,7 +3,7 @@
 package main
 
 import (
-	"log"
+	//"log"
 )
 
 type State int
@@ -33,9 +33,9 @@ func task() {
 		}
 		if eod == Do {
 			onDo()
-			if pushButtonCond() {
+			if time500msCond() {
 				current = Off
-				log.Println("State is changed: On to Off")
+				//log.Println("State is changed: On to Off")
 				eod = Entry
 			}
 		}
@@ -50,9 +50,9 @@ func task() {
 		}
 		if eod == Do {
 			offDo()
-			if pushButtonCond() {
+			if time500msCond() {
 				current = On
-				log.Println("State is changed: Off to On")
+				//log.Println("State is changed: Off to On")
 				eod = Entry
 			}
 		}

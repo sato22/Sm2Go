@@ -7,14 +7,12 @@ import (
 	"time"
 )
 
-var led machine
-
 func onEntry() {
 	// nothing to do
 }
 
 func onDo() {
-	led.High()
+	machine.LED.High()
 }
 
 func onExit() {
@@ -26,7 +24,7 @@ func offEntry() {
 }
 
 func offDo() {
-	led.Low()
+	machine.LED.Low()
 }
 
 func offExit() {
@@ -34,6 +32,6 @@ func offExit() {
 }
 
 func time500msCond() bool {
-	time.Sleep(time.Millisecond * 500)
+	time.Sleep(time.Millisecond * 1000)
 	return true
 }
