@@ -3,7 +3,7 @@ package main
 import (
 	"machine"
 	"time"
-	"test-module/pkg"
+	"github.com/sato22/Sm2Go/sample/ledbuttonTest_sample/ledbutton"
 )
 
 const (
