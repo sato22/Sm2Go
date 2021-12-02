@@ -8,8 +8,8 @@ import (
 
 const (
 	led  = machine.D5
-	left = machine.D9
-	right = machine.D8
+	leftButton = machine.D9
+	rightButton = machine.D8
 )
 
 func main() {

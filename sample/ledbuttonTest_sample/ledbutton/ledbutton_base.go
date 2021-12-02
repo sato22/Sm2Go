@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	debugLog          = true
+	debugLog          = false
 )
 
 type State int
@@ -34,7 +34,6 @@ func task() {
 	case On:
 		if eod == Entry {
 			onEntry()
-			log.Println("eod Entry")
 			eod = Do
 		}
 		if eod == Do {

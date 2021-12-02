@@ -4,11 +4,11 @@ package ledbutton
 
 import (
 	// "machine"
-	"log"
+	// "log"
 )
 
 func onEntry() {
-	// machine.D5.High()
+	led.High()
 }
 
 func onDo() {
@@ -20,7 +20,7 @@ func onExit() {
 }
 
 func offEntry() {
-	// machine.D5.Low()
+	led.Low()
 }
 
 func offDo() {
@@ -32,12 +32,9 @@ func offExit() {
 }
 
 func pushRightButtonCond() bool {
-	// return !machine.D8.Get()
-	log.Println("rightButton.Get() =", rightButton.Get())
 	return rightButton.Get()
 }
 
 func pushLeftButtonCond() bool {
-	// return !machine.D9.Get()
 	return leftButton.Get()
 }

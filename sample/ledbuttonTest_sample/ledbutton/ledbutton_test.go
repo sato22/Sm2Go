@@ -29,6 +29,7 @@ Button型などの構造体を定義
 goroutineにより，task()を回しながらユーザの操作をまわす
 */
 
+// output device
 type Led struct{
 	name string
 	current string // 現在の状態
@@ -37,76 +38,68 @@ type Led struct{
 type Button struct{
 	name string
 	push bool		// falseの時はrelease状態
-	on bool			// OnボタンかOffボタンか
 }
 
-func (led Led) High() {
-	led.current = "High"
-	log.Println(led.name , led.current)
+func (l *Led) High() {
+	l.current = "High"
+	log.Println(l.name , l.current)
 }
 
-func (led Led) Low() {
-	led.current = "Low"
-	log.Println(led.name , led.current)
+func (l *Led) Low() {
+	l.current = "Low"
+	log.Println(l.name , l.current)
 }
 
-func (button Button) Push(led Led){
-	button.push = true
-	log.Println(button.name , "Push")
-
-	if button.on{
-		led.High()
-	}else{
-		led.Low()
-	}
+func (b *Button) Push(){
+	b.push = true
+	log.Println(b.name , "Push")
 }
 
-func (button Button) Release(){
-	button.push = false
-	log.Println(button.name , "Release")
+func (b *Button) Release(){
+	b.push = false
+	log.Println(b.name , "Release")
 }
 
-func (p Button) Get() bool{
-	return p.push
+func (b Button) Get() bool{
+	return b.push
 }
 
-var led = Led{"led", "High"}
-var leftButton = Button{"leftButton", false, true}
-var rightButton = Button{"rightButton", false, false}
+var led = &Led{"led", "High"}
+var leftButton = &Button{"leftButton", false}
+var rightButton = &Button{"rightButton", false}
 
 func TestDevice(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
 		for {
-			// time.Sleep(1 * time.Millisecond)
+			time.Sleep(50 * time.Millisecond)
 			task()
+			// log.Println("test_task()")
 		}
 	}()
 
 	go func(){
-		log.Println("----------------led_test-------------")
-		led.High()
-		time.Sleep(1 * time.Second)
-		led.Low()
 		log.Println("----------------button_test-------------")
 		// leftButtonPush
 		time.Sleep(1 * time.Second)
-		leftButton.Push(led)
+		leftButton.Push()
 		time.Sleep(500 * time.Millisecond)
 		leftButton.Release()
+		
 		// rightButtonPush
 		time.Sleep(1 * time.Second)
-		rightButton.Push(led)
+		rightButton.Push()
 		time.Sleep(500 * time.Millisecond)
 		rightButton.Release()
+
 		// leftButtonPush dubble
 		time.Sleep(1 * time.Second)
-		leftButton.Push(led)
+		leftButton.Push()
 		time.Sleep(500 * time.Millisecond)
 		leftButton.Release()
 		time.Sleep(1 * time.Second)
-		leftButton.Push(led)
+		leftButton.Push()
 		time.Sleep(500 * time.Millisecond)
 		leftButton.Release()
 		time.Sleep(1 * time.Second)
