@@ -14,10 +14,10 @@ const (
 
 func main() {
 	led.Configure(machine.PinConfig{Mode: machine.PinOutput})
-	left.Configure(machine.PinConfig{Mode: machine.PinInputPullup})
-	right.Configure(machine.PinConfig{Mode: machine.PinInputPullup})
+	leftButton.Configure(machine.PinConfig{Mode: machine.PinInputPullup})
+	rightButton.Configure(machine.PinConfig{Mode: machine.PinInputPullup})
 	for {
-		task()
+		ledbutton.Task()
 		time.Sleep(time.Millisecond * 10)
 	}
 }

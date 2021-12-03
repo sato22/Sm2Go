@@ -1,6 +1,6 @@
 // Please edit this file
 
-package ledbutton
+package main
 
 import (
 	// "machine"

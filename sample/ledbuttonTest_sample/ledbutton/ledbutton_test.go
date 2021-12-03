@@ -1,6 +1,6 @@
 // This is a test file for testing state transitions
 
-package ledbutton
+package main
 
 import (
 	"sync"
@@ -15,19 +15,12 @@ func TestStateTrans(t *testing.T) {
 	go func() {
 		for {
 			time.Sleep(1 * time.Millisecond)
-			task()
+			Task()
 		}
 		wg.Done()
 	}()
 	wg.Wait()
 }
-
-/*
-Button型などの構造体を定義
-構造体にメソッドを追加，Button.Get()でlog.Println("button pushed")などを実行し，
-ボタンが押されたことをコンソール上で確認できるよう構成
-goroutineにより，task()を回しながらユーザの操作をまわす
-*/
 
 // output device
 type Led struct{
@@ -74,7 +67,7 @@ func TestDevice(t *testing.T) {
 	go func() {
 		for {
 			time.Sleep(50 * time.Millisecond)
-			task()
+			Task()
 			// log.Println("test_task()")
 		}
 	}()
