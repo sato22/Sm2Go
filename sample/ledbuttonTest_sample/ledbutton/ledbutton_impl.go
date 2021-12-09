@@ -1,9 +1,6 @@
 // Please edit this file
 
-package main
-
-// "machine"
-// "log"
+package ledbutton
 
 var led = &Led{"led", "High"}
 var leftButton = &Button{"leftButton", false}

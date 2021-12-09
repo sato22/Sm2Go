@@ -1,6 +1,6 @@
 // This is a test file for testing state transitions
 
-package main
+package ledbutton
 
 import (
 	"log"
