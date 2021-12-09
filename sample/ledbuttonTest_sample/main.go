@@ -21,3 +21,5 @@ func main() {
 		time.Sleep(time.Millisecond * 10)
 	}
 }
+
+// interfaceが同じであれば、

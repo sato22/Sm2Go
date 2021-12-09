@@ -2,10 +2,12 @@
 
 package main
 
-import (
-	// "machine"
-	// "log"
-)
+// "machine"
+// "log"
+
+var led = &Led{"led", "High"}
+var leftButton = &Button{"leftButton", false}
+var rightButton = &Button{"rightButton", false}
 
 func onEntry() {
 	led.High()
