@@ -17,7 +17,6 @@ func TestStateTrans(t *testing.T) {
 			time.Sleep(1 * time.Millisecond)
 			Task()
 		}
-		wg.Done()
 	}()
 	wg.Wait()
 }

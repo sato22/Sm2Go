@@ -11,6 +11,10 @@ type Switch interface {
 	Get() bool
 }
 
+var dev Device
+var leftSwitch Switch
+var rightSwitch Switch
+
 func ConfigureDevice(d Device) {
 	dev = d
 }
@@ -23,11 +27,22 @@ func ConfigureRightButton(s Switch) {
 	rightSwitch = s
 }
 
-var dev Device
-var leftSwitch Switch
-var rightSwitch Switch
+// func deviceHigh(d Device) {
+// 	d.High()
+// }
+
+// func deviceLow(d Device) {
+// 	d.Low()
+// }
+
+// func switchGet(b Switch) bool {
+// 	return b.Get()
+// }
+
+// generated
 
 func onEntry() {
+	// deviceHigh(dev)
 	dev.High()
 }
 
@@ -40,6 +55,7 @@ func onExit() {
 }
 
 func offEntry() {
+	// deviceLow(dev)
 	dev.Low()
 }
 
@@ -52,9 +68,11 @@ func offExit() {
 }
 
 func pushRightButtonCond() bool {
+	// return switchGet(rightSwitch)
 	return rightSwitch.Get()
 }
 
 func pushLeftButtonCond() bool {
+	// return switchGet(leftSwitch)
 	return leftSwitch.Get()
 }
