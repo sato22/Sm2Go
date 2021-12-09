@@ -57,7 +57,15 @@ func (b Button) Get() bool {
 	return b.push
 }
 
+var led = &Led{"led", "High"}
+var leftButton = &Button{"leftButton", false}
+var rightButton = &Button{"rightButton", false}
+
 func TestDevice(t *testing.T) {
+	ConfigureDevice(led)
+	ConfigureLeftButton(leftButton)
+	ConfigureRightButton(rightButton)
+
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {

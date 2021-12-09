@@ -2,12 +2,33 @@
 
 package ledbutton
 
-var led = &Led{"led", "High"}
-var leftButton = &Button{"leftButton", false}
-var rightButton = &Button{"rightButton", false}
+type Device interface {
+	High()
+	Low()
+}
+
+type Switch interface {
+	Get() bool
+}
+
+func ConfigureDevice(d Device) {
+	dev = d
+}
+
+func ConfigureLeftButton(s Switch) {
+	leftSwitch = s
+}
+
+func ConfigureRightButton(s Switch) {
+	rightSwitch = s
+}
+
+var dev Device
+var leftSwitch Switch
+var rightSwitch Switch
 
 func onEntry() {
-	led.High()
+	dev.High()
 }
 
 func onDo() {
@@ -19,7 +40,7 @@ func onExit() {
 }
 
 func offEntry() {
-	led.Low()
+	dev.Low()
 }
 
 func offDo() {
@@ -31,9 +52,9 @@ func offExit() {
 }
 
 func pushRightButtonCond() bool {
-	return rightButton.Get()
+	return rightSwitch.Get()
 }
 
 func pushLeftButtonCond() bool {
-	return leftButton.Get()
+	return leftSwitch.Get()
 }
