@@ -4,8 +4,13 @@ import (
 	"machine"
 	"time"
 
-	"github.com/sato22/Sm2Go/sample/ledbuttonTest_sample/ledbutton"
+	// "github.com/sato22/Sm2Go/sample/ledbuttonTest_sample/ledbutton"
+	"Sm2Go/sample/ledbuttonTest_sample/ledbutton"
 )
+
+/*
+どの部分でエラーが発生しているのか、問題の切り分けを行う
+*/
 
 func main() {
 	led := machine.D5
@@ -15,10 +20,6 @@ func main() {
 	led.Configure(machine.PinConfig{Mode: machine.PinOutput})
 	leftButton.Configure(machine.PinConfig{Mode: machine.PinInputPullup})
 	rightButton.Configure(machine.PinConfig{Mode: machine.PinInputPullup})
-
-	ledbutton.ConfigureDevice(&led)
-	ledbutton.ConfigureLeftButton(&leftButton)
-	ledbutton.ConfigureRightButton(&rightButton)
 
 	for {
 		ledbutton.Task()

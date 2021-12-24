@@ -1,7 +1,8 @@
 // Please edit this file
 
-package ledbutton
+package ledpkg
 
+// interface
 type Device interface {
 	High()
 	Low()
@@ -15,10 +16,7 @@ var dev Device
 var leftSwitch Switch
 var rightSwitch Switch
 
-// var dev machine.Pin
-// var leftSwitch machine.Pin
-// var rightSwitch machine.Pin
-
+// configure
 func ConfigureDevice(d Device) {
 	dev = d
 }
@@ -31,17 +29,16 @@ func ConfigureRightButton(s Switch) {
 	rightSwitch = s
 }
 
-// func ConfigureDevice(d machine.Pin) {
-// 	dev = d
-// }
+// log.Println()
+type DebugPrint interface {
+	PrintLog(string)
+}
 
-// func ConfigureLeftButton(s machine.Pin) {
-// 	leftSwitch = s
-// }
+var debug DebugPrint
 
-// func ConfigureRightButton(s machine.Pin) {
-// 	rightSwitch = s
-// }
+func ConfigureLog(p DebugPrint) {
+	debug = p
+}
 
 // generated
 func onEntry() {
@@ -69,9 +66,9 @@ func offExit() {
 }
 
 func pushRightButtonCond() bool {
-	return rightSwitch.Get()
+	return !rightSwitch.Get()
 }
 
 func pushLeftButtonCond() bool {
-	return leftSwitch.Get()
+	return !leftSwitch.Get()
 }

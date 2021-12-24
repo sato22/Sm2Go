@@ -1,6 +1,6 @@
 // This is a test file for testing state transitions
 
-package ledbutton_test
+package ledpkg
 
 import (
 	"log"
@@ -17,9 +17,12 @@ func TestStateTrans(t *testing.T) {
 			time.Sleep(1 * time.Millisecond)
 			Task()
 		}
+		wg.Done()
 	}()
 	wg.Wait()
 }
+
+// add
 
 // output device
 type Led struct {
@@ -58,12 +61,11 @@ func (b Button) Get() bool {
 
 var led = &Led{"led", "High"}
 var leftButton = &Button{"leftButton", false}
-var rightButton = &Button{"rightButton", false}
 
 func TestDevice(t *testing.T) {
 	ConfigureDevice(led)
 	ConfigureLeftButton(leftButton)
-	ConfigureRightButton(rightButton)
+	// ConfigureRightButton(rightButton)
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -82,11 +84,11 @@ func TestDevice(t *testing.T) {
 		time.Sleep(500 * time.Millisecond)
 		leftButton.Release()
 
-		// rightButtonPush
-		time.Sleep(1 * time.Second)
-		rightButton.Push()
-		time.Sleep(500 * time.Millisecond)
-		rightButton.Release()
+		// // rightButtonPush
+		// time.Sleep(1 * time.Second)
+		// rightButton.Push()
+		// time.Sleep(500 * time.Millisecond)
+		// rightButton.Release()
 
 		// leftButtonPush dubble
 		time.Sleep(1 * time.Second)

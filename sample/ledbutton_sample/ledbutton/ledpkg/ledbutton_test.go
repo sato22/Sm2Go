@@ -1,6 +1,6 @@
 // This is a test file for testing state transitions
 
-package ledbutton_test
+package ledpkg
 
 import (
 	"log"
@@ -8,6 +8,67 @@ import (
 	"testing"
 	"time"
 )
+
+// output device
+type Led struct {
+	name    string
+	current string // "High" or "Low"
+}
+
+type Button struct {
+	name    string
+	release bool // true → release状態，false → push状態
+}
+
+// Led
+func (l *Led) High() {
+	l.current = "High"
+	log.Println(l.name, l.current)
+}
+
+func (l *Led) Low() {
+	l.current = "Low"
+	log.Println(l.name, l.current)
+}
+
+// Button
+func (b *Button) Push() {
+	b.release = false
+	log.Println(b.name, "Push")
+}
+
+func (b *Button) Release() {
+	b.release = true
+	log.Println(b.name, "Release")
+}
+
+func (b Button) Get() bool {
+	return b.release
+}
+
+// define struct
+var led = &Led{"led", "High"}
+var leftButton = &Button{"leftButton", true}
+var rightButton = &Button{"rightButton", true}
+
+//log.Println()
+type DebugLog struct{}
+
+var logTest = DebugLog{}
+
+func (l DebugLog) PrintLog(debstr string) {
+	log.Println(debstr)
+}
+
+// init
+func init() {
+	if led.current == "High" {
+		current = On
+	} else if led.current == "Low" {
+		current = Off
+	}
+	eod = Entry
+}
 
 func TestStateTrans(t *testing.T) {
 	var wg sync.WaitGroup
@@ -21,52 +82,16 @@ func TestStateTrans(t *testing.T) {
 	wg.Wait()
 }
 
-// output device
-type Led struct {
-	name    string
-	current string // 現在の状態
-}
-
-type Button struct {
-	name string
-	push bool // falseの時はrelease状態
-}
-
-func (l *Led) High() {
-	l.current = "High"
-	log.Println(l.name, l.current)
-}
-
-func (l *Led) Low() {
-	l.current = "Low"
-	log.Println(l.name, l.current)
-}
-
-func (b *Button) Push() {
-	b.push = true
-	log.Println(b.name, "Push")
-}
-
-func (b *Button) Release() {
-	b.push = false
-	log.Println(b.name, "Release")
-}
-
-func (b Button) Get() bool {
-	return b.push
-}
-
-var led = &Led{"led", "High"}
-var leftButton = &Button{"leftButton", false}
-var rightButton = &Button{"rightButton", false}
-
 func TestDevice(t *testing.T) {
 	ConfigureDevice(led)
 	ConfigureLeftButton(leftButton)
 	ConfigureRightButton(rightButton)
 
+	ConfigureLog(logTest)
+
 	var wg sync.WaitGroup
 	wg.Add(1)
+	// goroutine (base.go Task())
 	go func() {
 		for {
 			time.Sleep(50 * time.Millisecond)
@@ -74,21 +99,24 @@ func TestDevice(t *testing.T) {
 		}
 	}()
 
+	// goroutine (user operation)
 	go func() {
-		log.Println("----------------button_test-------------")
 		// leftButtonPush
+		log.Println("----------------leftButtonPush-------------")
 		time.Sleep(1 * time.Second)
 		leftButton.Push()
 		time.Sleep(500 * time.Millisecond)
 		leftButton.Release()
 
 		// rightButtonPush
+		log.Println("----------------rightButtonPush-------------")
 		time.Sleep(1 * time.Second)
 		rightButton.Push()
 		time.Sleep(500 * time.Millisecond)
 		rightButton.Release()
 
-		// leftButtonPush dubble
+		// leftButtonPush double
+		log.Println("----------------leftButtonPush double-------------")
 		time.Sleep(1 * time.Second)
 		leftButton.Push()
 		time.Sleep(500 * time.Millisecond)
