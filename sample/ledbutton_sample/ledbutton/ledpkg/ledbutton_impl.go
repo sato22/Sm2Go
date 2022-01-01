@@ -29,15 +29,14 @@ func ConfigureRightButton(s Switch) {
 	rightSwitch = s
 }
 
-// log.Println()
-type DebugPrint interface {
-	PrintLog(string)
+type DebugLogger interface {
+	Println(string)
 }
 
-var debug DebugPrint
+var logger DebugLogger
 
-func ConfigureLog(p DebugPrint) {
-	debug = p
+func ConfigureLog(p DebugLogger) {
+	logger = p
 }
 
 // generated

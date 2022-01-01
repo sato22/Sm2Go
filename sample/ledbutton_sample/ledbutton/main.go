@@ -7,6 +7,14 @@ import (
 	"Sm2Go/sample/ledbutton_sample/ledbutton/ledpkg"
 )
 
+type DebugStruct struct{}
+
+var logTest = DebugStruct{}
+
+func (l DebugStruct) Println(debstr string) {
+	println(debstr)
+}
+
 func main() {
 	led := machine.D5
 	leftButton := machine.D9
@@ -20,13 +28,10 @@ func main() {
 	ledpkg.ConfigureLeftButton(leftButton)
 	ledpkg.ConfigureRightButton(rightButton)
 
-	// count := 0
+	ledpkg.ConfigureLog(logTest)
 
 	for {
 		ledpkg.Task()
 		time.Sleep(time.Millisecond * 10)
-		// count++
-		// println("main.go print test", count)
-		// fmt.Println("main.go print test")
 	}
 }

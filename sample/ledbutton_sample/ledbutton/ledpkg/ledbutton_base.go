@@ -3,7 +3,7 @@
 package ledpkg
 
 const (
-	debugLog = true
+	debug = true
 )
 
 type State int
@@ -35,9 +35,8 @@ func Task() {
 			onDo()
 			if pushRightButtonCond() {
 				current = Off
-				if debugLog {
-					debug.PrintLog("State is changed: On to Off")
-					println("case:On print test")
+				if debug {
+					logger.Println("State is changed: On to Off")
 				}
 				eod = Exit
 			}
@@ -55,9 +54,8 @@ func Task() {
 			offDo()
 			if pushLeftButtonCond() {
 				current = On
-				if debugLog {
-					debug.PrintLog("State is changed: Off to On")
-					println("case:Off print test")
+				if debug {
+					logger.Println("State is changed: Off to On")
 				}
 				eod = Exit
 			}

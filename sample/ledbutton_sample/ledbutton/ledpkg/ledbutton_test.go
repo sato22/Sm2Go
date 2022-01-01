@@ -52,11 +52,11 @@ var leftButton = &Button{"leftButton", true}
 var rightButton = &Button{"rightButton", true}
 
 //log.Println()
-type DebugLog struct{}
+type DebugStruct struct{}
 
-var logTest = DebugLog{}
+var logTest = DebugStruct{}
 
-func (l DebugLog) PrintLog(debstr string) {
+func (l DebugStruct) Println(debstr string) {
 	log.Println(debstr)
 }
 
