@@ -4,8 +4,8 @@ import (
 	"machine"
 	"time"
 
-	"Sm2Go/sample/arduino_lesson/lesson11/keypad4x4"
-	"Sm2Go/sample/arduino_lesson/lesson11/pkg"
+	"Sm2Go/sample/arduino_lesson/lesson11_driver/keypad4x4"
+	"Sm2Go/sample/arduino_lesson/lesson11_driver/pkg"
 )
 
 type DebugStruct struct{}

@@ -3,7 +3,7 @@
 package pkg
 
 import (
-	"strconv"
+	"fmt"
 	"time"
 )
 
@@ -15,7 +15,7 @@ type Device interface {
 
 type Keypad interface {
 	Configure()
-	GetKey() uint8
+	GetKey() string
 }
 
 var dev Device
@@ -48,7 +48,7 @@ const NoKeyPressed = 255
 
 // generated
 func onEntry() {
-	println("Success")
+	logger.Println("Success") // loggerを使った出力にする
 	dev.High()
 	entered = ""
 }
@@ -67,9 +67,9 @@ func offEmptyEntry() {
 
 func offEmptyDo() {
 	key := keypad4.GetKey()
-	if key != NoKeyPressed {
-		println("entered:", key)
-		entered += strconv.Itoa(int(key))
+	if key != "NoKeyPressed" {
+		logger.Println(fmt.Sprintf("%s%s", "entered:", key))
+		entered += key
 	}
 }
 
@@ -104,8 +104,8 @@ func keyEnteredCond() bool {
 
 func keyFailedCond() bool {
 	if passcode != entered {
-		println("Fail")
-		println("Entered Passcode: ", entered)
+		logger.Println("Fail")
+		logger.Println(fmt.Sprintf("%s%s", "Entered Passcode:", entered))
 		entered = ""
 		return true
 	} else {

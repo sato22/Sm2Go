@@ -10,7 +10,8 @@ type State int
 
 const (
 	On State = iota
-	Off
+	OffEmpty
+	OffEntered
 )
 
 type Eod int
@@ -34,7 +35,7 @@ func Task() {
 		if eod == Do {
 			onDo()
 			if time3secCond() {
-				current = Off
+				current = OffEmpty
 				if debug {
 					logger.Println("State is changed: On to Off")
 				}
@@ -45,29 +46,55 @@ func Task() {
 			onExit()
 			eod = Entry
 		}
-	case Off:
+	case OffEmpty:
 		if eod == Entry {
-			offEntry()
+			offEmptyEntry()
 			eod = Do
 		}
 		if eod == Do {
-			offDo()
-			if correctKeyCond() {
-				current = On
+			offEmptyDo()
+			if keyEnteredCond() {
+				current = OffEntered
 				if debug {
-					logger.Println("State is changed: Off to On")
+					logger.Println("State is changed: OffEmpty to OffEntered")
 				}
 				eod = Exit
 			}
 		}
 		if eod == Exit {
-			offExit()
+			offEmptyExit()
+			eod = Entry
+		}
+	case OffEntered:
+		if eod == Entry {
+			offEnteredEntry()
+			eod = Do
+		}
+		if eod == Do {
+			offEnteredDo()
+			if keyFailedCond() {
+				current = OffEmpty
+				if debug {
+					logger.Println("State is changed: OffEntered to OffEmpty")
+				}
+				eod = Exit
+			}
+			if correctKeyCond() {
+				current = On
+				if debug {
+					logger.Println("State is changed: OffEntered to On")
+				}
+				eod = Exit
+			}
+		}
+		if eod == Exit {
+			offEnteredExit()
 			eod = Entry
 		}
 	}
 }
 
 func init() {
-	current = Off
+	current = OffEmpty
 	eod = Entry
 }

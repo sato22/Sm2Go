@@ -48,7 +48,7 @@ const NoKeyPressed = 255
 
 // generated
 func onEntry() {
-	println("Success")
+	println("Success") // loggerを使った出力にする
 	dev.High()
 	entered = ""
 }
@@ -61,26 +61,31 @@ func onExit() {
 	// nothing to do
 }
 
-func offEntry() {
+func offEmptyEntry() {
 	dev.Low()
 }
 
-func offDo() {
+func offEmptyDo() {
 	key := keypad4.GetKey()
 	if key != NoKeyPressed {
 		println("entered:", key)
 		entered += strconv.Itoa(int(key))
 	}
-	if len(passcode) == len(entered) {
-		if passcode != entered {
-			println("Fail")
-			println("Entered Passcode: ", entered)
-			entered = ""
-		}
-	}
 }
 
-func offExit() {
+func offEmptyExit() {
+	// nothing to do
+}
+
+func offEnteredEntry() {
+	// nothing to do
+}
+
+func offEnteredDo() {
+	// nothing to do
+}
+
+func offEnteredExit() {
 	// nothing to do
 }
 
@@ -91,4 +96,19 @@ func correctKeyCond() bool {
 func time3secCond() bool {
 	time.Sleep(time.Second * 3)
 	return true
+}
+
+func keyEnteredCond() bool {
+	return len(passcode) == len(entered)
+}
+
+func keyFailedCond() bool {
+	if passcode != entered {
+		println("Fail")
+		println("Entered Passcode: ", entered)
+		entered = ""
+		return true
+	} else {
+		return false
+	}
 }

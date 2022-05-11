@@ -81,7 +81,7 @@ func init() {
 	if led.current == "High" {
 		current = On
 	} else if led.current == "Low" {
-		current = Off
+		current = OffEmpty
 	}
 	eod = Entry
 }

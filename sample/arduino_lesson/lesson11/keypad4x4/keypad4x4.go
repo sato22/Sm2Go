@@ -4,6 +4,14 @@ import (
 	"machine"
 )
 
+/*
+・driverは自作想定（既にgithubにあげられているものもあるけれど）
+	→　driver自体がテストできるべき
+・machine.Pinのinterfaceを持った構造体が定義できるといい
+	→　要するに今までと同じ（High() Low() Get()　を持ったinterfaceの定義、testとmain.goの実行で動作が違う）
+	→　ただPinConfigの挙動がわからないので、時間がかかると思う。注意。
+*/
+
 // NoKeyPressed is used, when no key was pressed
 const NoKeyPressed = 255
 
@@ -35,6 +43,7 @@ func NewDevice(r4, r3, r2, r1, c4, c3, c2, c1 machine.Pin) Device {
 
 // Configure sets the column pins as input and the row pins as output
 func (keypad *device) Configure() {
+	// PinConfigはコンストラクタ（構造体）を定義しているだけ？
 	inputConfig := machine.PinConfig{Mode: machine.PinInputPullup}
 	for i := range keypad.columns {
 		keypad.columns[i].Configure(inputConfig)
