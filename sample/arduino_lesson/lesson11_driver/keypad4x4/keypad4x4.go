@@ -3,6 +3,7 @@ package keypad4x4
 import (
 	"Sm2Go/sample/arduino_lesson/lesson11_driver/pindriver"
 	"fmt"
+	"time"
 )
 
 /*
@@ -91,17 +92,17 @@ func (keypad *device) GetKey() string {
 func (keypad *device) GetIndices() (int, int) {
 	for rowIndex, rowPin := range keypad.rows {
 		rowPin.Low()
-		// time.Sleep(1 * time.Microsecond)
+		time.Sleep(1 * time.Microsecond)
 		// 何に対応するからこのぐらいの値を入れてください
 		// 書き換える部分をどのように提供するか、ドライバーのままで動かせないのか
 		// 動いている仕組みがどうなっているか？何のために待っているのか？
 		// 仕組みをまとめた図
 
-		// fmt.Println("----- row index =", rowIndex, "-----")
+		fmt.Println("----- row index =", rowIndex, "-----")
 
 		for columnIndex, _ := range keypad.columns {
 			columnPin := keypad.columns[columnIndex]
-			// time.Sleep(1 * time.Microsecond)
+			time.Sleep(1 * time.Microsecond)
 			fmt.Println("column index =", columnIndex, ", columnPin.Get() =", columnPin.Get(), "keypad.inputEnabled =", keypad.inputEnabled)
 
 			if !columnPin.Get() && keypad.inputEnabled {

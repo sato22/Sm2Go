@@ -255,11 +255,11 @@ func circuitSurv() {
 	}
 
 	if button[5] == "On" {
-		fmt.Println("button[5] On")
+		// fmt.Println("button[5] On")
 		c3.Set(r3.Get())
 		time.Sleep(1 * time.Nanosecond)
 	} else {
-		fmt.Println("button[5] Off")
+		// fmt.Println("button[5] Off")
 		c3.High()
 	}
 
