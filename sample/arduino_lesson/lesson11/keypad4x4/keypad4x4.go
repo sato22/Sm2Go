@@ -5,20 +5,15 @@ import (
 )
 
 /*
-・driverは自作想定（既にgithubにあげられているものもあるけれど）
+・driverは自作想定
 	→　driver自体がテストできるべき
-・machine.Pinのinterfaceを持った構造体が定義できるといい
-	→　要するに今までと同じ（High() Low() Get()　を持ったinterfaceの定義、testとmain.goの実行で動作が違う）
-	→　ただPinConfigの挙動がわからないので、時間がかかると思う。注意。
+・machine.Pinのinterfaceを持った構造体を定義
 */
-
-// NoKeyPressed is used, when no key was pressed
-const NoKeyPressed = 255
 
 // Device is used as 4x4 keypad driver
 type Device interface {
 	Configure()
-	GetKey() uint8
+	GetKey() string
 	GetIndices() (int, int)
 }
 
@@ -29,7 +24,7 @@ type device struct {
 	lastRow      int
 	columns      [4]machine.Pin
 	rows         [4]machine.Pin
-	mapping      [4][4]uint8
+	mapping      [4][4]string // keypadの値として"A"や"#"等の文字を扱うため
 }
 
 // takes r4 -r1 pins and c4 - c1 pins
@@ -43,7 +38,6 @@ func NewDevice(r4, r3, r2, r1, c4, c3, c2, c1 machine.Pin) Device {
 
 // Configure sets the column pins as input and the row pins as output
 func (keypad *device) Configure() {
-	// PinConfigはコンストラクタ（構造体）を定義しているだけ？
 	inputConfig := machine.PinConfig{Mode: machine.PinInputPullup}
 	for i := range keypad.columns {
 		keypad.columns[i].Configure(inputConfig)
@@ -55,11 +49,11 @@ func (keypad *device) Configure() {
 		keypad.rows[i].High()
 	}
 
-	keypad.mapping = [4][4]uint8{
-		{0, 1, 2, 3},
-		{4, 5, 6, 7},
-		{8, 9, 10, 11},
-		{12, 13, 14, 15},
+	keypad.mapping = [4][4]string{
+		{"1", "2", "3", "A"},
+		{"4", "5", "6", "B"},
+		{"7", "8", "9", "C"},
+		{"*", "0", "#", "D"},
 	}
 
 	keypad.inputEnabled = true
@@ -75,10 +69,10 @@ func (keypad *device) Configure() {
 // 8	9	10	11
 // 12	13	14	15
 // returns 255 for no keyPressed
-func (keypad *device) GetKey() uint8 {
+func (keypad *device) GetKey() string {
 	row, column := keypad.GetIndices()
 	if row == -1 && column == -1 {
-		return NoKeyPressed
+		return "NoKeyPressed"
 	}
 
 	return keypad.mapping[row][column]
@@ -89,15 +83,22 @@ func (keypad *device) GetIndices() (int, int) {
 	for rowIndex, rowPin := range keypad.rows {
 		rowPin.Low()
 
-		for columnIndex := range keypad.columns {
+		// fmt.Println("----- row index =", rowIndex, "-----")
+
+		for columnIndex, _ := range keypad.columns {
 			columnPin := keypad.columns[columnIndex]
+			// fmt.Println("column index =", columnIndex, ", columnPin.Get() =", columnPin.Get(), "keypad.inputEnabled =", keypad.inputEnabled)
 
 			if !columnPin.Get() && keypad.inputEnabled {
+				// fmt.Println("---if---", "index =", columnIndex, ", columnPin.Get() =", columnPin.Get())
 
 				keypad.inputEnabled = false
 
 				keypad.lastColumn = columnIndex
 				keypad.lastRow = rowIndex
+
+				// fmt.Println("keypad.lastColumn =", keypad.lastColumn)
+				// fmt.Println("keypad.lastRow =", keypad.lastRow)
 
 				return keypad.lastRow, keypad.lastColumn
 			}
@@ -107,6 +108,7 @@ func (keypad *device) GetIndices() (int, int) {
 				rowIndex == keypad.lastRow &&
 				!keypad.inputEnabled {
 				keypad.inputEnabled = true
+				// fmt.Println("----------if-----------     columnPin.Get() =", columnPin.Get(), "columnindex =", columnIndex, "rowindex =", rowIndex, "keypad.inputEnabled =", keypad.inputEnabled)
 			}
 		}
 
