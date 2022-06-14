@@ -148,97 +148,81 @@ func pushButtonD() {
 func releaseButtonOne() {
 	<-chGetKey
 	button[0] = "Off"
-	ch <- false
 }
 
 func releaseButtonTwo() {
 	<-chGetKey
 	button[1] = "Off"
-	ch <- false
 }
 
 func releaseButtonThree() {
 	<-chGetKey
 	button[2] = "Off"
-	ch <- false
 }
 
 func releaseButtonA() {
 	<-chGetKey
 	button[3] = "Off"
-	ch <- false
 }
 
 func releaseButtonFour() {
 	<-chGetKey
 	button[4] = "Off"
-	ch <- false
 }
 
 func releaseButtonFive() {
 	<-chGetKey
 	button[5] = "Off"
-	ch <- false
 }
 
 func releaseButtonSix() {
 	<-chGetKey
 	button[6] = "Off"
-	ch <- false
 }
 
 func releaseButtonB() {
 	<-chGetKey
 	button[7] = "Off"
-	ch <- false
 }
 
 func releaseButtonSeven() {
 	<-chGetKey
 	button[8] = "Off"
-	ch <- false
 }
 
 func releaseButtonEight() {
 	<-chGetKey
 	button[9] = "Off"
-	ch <- false
 }
 
 func releaseButtonNine() {
 	<-chGetKey
 	button[10] = "Off"
-	ch <- false
 }
 
 func releaseButtonC() {
 	<-chGetKey
 	button[11] = "Off"
-	ch <- false
 }
 
 func releaseButtonAsterisk() {
 	<-chGetKey
 	button[12] = "Off"
-	ch <- false
 }
 
 func releaseButtonZero() {
 	<-chGetKey
 	button[13] = "Off"
-	ch <- false
 }
 
 func releaseButtonSharp() {
 	<-chGetKey
 	button[14] = "Off"
-	ch <- false
 }
 
 func releaseButtonD() {
 	<-chGetKey
 	button[15] = "Off"
-	ch <- false
 }
 
 type device struct {
@@ -262,65 +246,35 @@ func (keypad *device) Configure() {
 func (keypad *device) GetIndices() (int, int) {
 	if button[0] == "On" {
 		return 0, 0
-	}
-
-	if button[1] == "On" {
+	} else if button[1] == "On" {
 		return 0, 1
-	}
-
-	if button[2] == "On" {
+	} else if button[2] == "On" {
 		return 0, 2
-	}
-
-	if button[3] == "On" {
+	} else if button[3] == "On" {
 		return 0, 3
-	}
-
-	if button[4] == "On" {
+	} else if button[4] == "On" {
 		return 1, 0
-	}
-
-	if button[5] == "On" {
+	} else if button[5] == "On" {
 		return 1, 1
-	}
-
-	if button[6] == "On" {
+	} else if button[6] == "On" {
 		return 1, 2
-	}
-
-	if button[7] == "On" {
+	} else if button[7] == "On" {
 		return 1, 3
-	}
-
-	if button[8] == "On" {
+	} else if button[8] == "On" {
 		return 2, 0
-	}
-
-	if button[9] == "On" {
+	} else if button[9] == "On" {
 		return 2, 1
-	}
-
-	if button[10] == "On" {
+	} else if button[10] == "On" {
 		return 2, 2
-	}
-
-	if button[11] == "On" {
+	} else if button[11] == "On" {
 		return 2, 3
-	}
-
-	if button[12] == "On" {
+	} else if button[12] == "On" {
 		return 3, 0
-	}
-
-	if button[13] == "On" {
+	} else if button[13] == "On" {
 		return 3, 1
-	}
-
-	if button[14] == "On" {
+	} else if button[14] == "On" {
 		return 3, 2
-	}
-
-	if button[15] == "On" {
+	} else if button[15] == "On" {
 		return 3, 3
 	}
 
@@ -353,9 +307,19 @@ func (keypad *device) GetKey() string {
 	return "NoKeyPressed"
 }
 
+/*
+// velilogのclkのような構成に
+〇msといった処理時間の設定
+チャタリングのシミュレーションも
+*/
+
 // GetKey() pushButton()を待つ
 // releaseBUtton() pushBUtton()を待つ（実際はGetKey()を待っている）
 // pushBUtton() releaseButton()を待つ
+
+// goroutineが重要なので、リアルタイムで簡潔に動作テストできることを主張
+// データの受け渡し（データの共有？）をチャネルで（少し前にやったやつ）
+// ある程度フレームワークのようなものを提供したい
 
 // define struct
 var led = &Led{"led", "Low"}
@@ -398,7 +362,9 @@ func TestDevice01(t *testing.T) {
 	// goroutine (base.go Task())
 	go func() {
 		for {
+			// 〇秒ごとにTask()を実行（時間の割合で考える）
 			Task() // Repeat GetKey()
+			// ここの処理にかかる時間を設定→
 		}
 	}()
 
@@ -406,6 +372,7 @@ func TestDevice01(t *testing.T) {
 	// correct input (PassCode:5678, Entered:5678)
 	go func() {
 		pushButtonFive()
+		// ボタンを〇秒押し続ける
 		releaseButtonFive()
 
 		pushButtonSix()
@@ -457,10 +424,10 @@ func TestDevice02(t *testing.T) {
 		releaseButtonTwo()
 
 		pushButtonOne()
-		releaseButtonZero()
+		releaseButtonOne()
 
 		pushButtonTwo()
-		releaseButtonZero()
+		releaseButtonTwo()
 
 		time.Sleep(5 * time.Second)
 		wg.Done()
@@ -506,7 +473,7 @@ func TestDevice03(t *testing.T) {
 		releaseButtonThree()
 
 		pushButtonThree()
-		releaseButtonA()
+		releaseButtonThree()
 
 		time.Sleep(5 * time.Second)
 		wg.Done()
