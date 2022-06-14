@@ -59,174 +59,230 @@ func (l *Led) Low() {
 }
 
 var button [16]string = [16]string{"Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off"}
+var mu sync.Mutex // 排他制御
 
-var ch chan bool       // pushButtonしたことを通知
-var chGetKey chan bool // GetKey()により押されたボタンの値を取ったことを通知
+// var ch chan bool       // pushButtonしたことを通知
+// var chGetKey chan bool // GetKey()により押されたボタンの値を取ったことを通知
 
 // push button
 func pushButtonOne() {
+	mu.Lock()         // muをロックする
+	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[0] = "On"
-	ch <- true
 }
 
 func pushButtonTwo() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[1] = "On"
-	ch <- true
+
 }
 
 func pushButtonThree() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[2] = "On"
-	ch <- true
 }
 
 func pushButtonA() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[3] = "On"
-	ch <- true
 }
 
 func pushButtonFour() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[4] = "On"
-	ch <- true
 }
 
 func pushButtonFive() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[5] = "On"
-	ch <- true
+	// log.Println("button Five On")
+
 }
 
 func pushButtonSix() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[6] = "On"
-	ch <- true
+	// log.Println("button Six On")
+
 }
 
 func pushButtonB() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[7] = "On"
-	ch <- true
+
 }
 
 func pushButtonSeven() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[8] = "On"
-	ch <- true
+	// log.Println("button Seven On")
+
 }
 
 func pushButtonEight() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[9] = "On"
-	ch <- true
+	// log.Println("button Eight On")
+
 }
 
 func pushButtonNine() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[10] = "On"
-	ch <- true
+
 }
 
 func pushButtonC() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[11] = "On"
-	ch <- true
+
 }
 
 func pushButtonAsterisk() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[12] = "On"
-	ch <- true
+
 }
 
 func pushButtonZero() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[13] = "On"
-	ch <- true
+
 }
 
 func pushButtonSharp() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[14] = "On"
-	ch <- true
+
 }
 
 func pushButtonD() {
+	mu.Lock()
+	defer mu.Unlock()
 	button[15] = "On"
-	ch <- true
+
 }
 
 // releaseButton
 func releaseButtonOne() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[0] = "Off"
 }
 
 func releaseButtonTwo() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[1] = "Off"
 }
 
 func releaseButtonThree() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[2] = "Off"
 }
 
 func releaseButtonA() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[3] = "Off"
 }
 
 func releaseButtonFour() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[4] = "Off"
 }
 
 func releaseButtonFive() {
-	<-chGetKey
+	mu.Lock()         // muをロックする
+	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[5] = "Off"
+	// log.Println("button Five Off")
 }
 
 func releaseButtonSix() {
-	<-chGetKey
+	mu.Lock()         // muをロックする
+	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[6] = "Off"
+	// log.Println("button Six Off")
 }
 
 func releaseButtonB() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[7] = "Off"
 }
 
 func releaseButtonSeven() {
-	<-chGetKey
+	mu.Lock()         // muをロックする
+	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[8] = "Off"
+	// log.Println("button Seven Off")
 }
 
 func releaseButtonEight() {
-	<-chGetKey
+	mu.Lock()         // muをロックする
+	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[9] = "Off"
+	// log.Println("button Eight Off")
 }
 
 func releaseButtonNine() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[10] = "Off"
 }
 
 func releaseButtonC() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[11] = "Off"
 }
 
 func releaseButtonAsterisk() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[12] = "Off"
 }
 
 func releaseButtonZero() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[13] = "Off"
 }
 
 func releaseButtonSharp() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[14] = "Off"
 }
 
 func releaseButtonD() {
-	<-chGetKey
+	mu.Lock()
+	defer mu.Unlock()
 	button[15] = "Off"
 }
 
 type device struct {
-	mapping [4][4]string
+	mapping      [4][4]string
+	inputEnabled bool
+	lastColumn   int
+	lastRow      int
 }
 
 func newDevice() *device {
@@ -244,38 +300,221 @@ func (keypad *device) Configure() {
 }
 
 func (keypad *device) GetIndices() (int, int) {
-	if button[0] == "On" {
-		return 0, 0
-	} else if button[1] == "On" {
-		return 0, 1
-	} else if button[2] == "On" {
-		return 0, 2
-	} else if button[3] == "On" {
-		return 0, 3
-	} else if button[4] == "On" {
-		return 1, 0
-	} else if button[5] == "On" {
-		return 1, 1
-	} else if button[6] == "On" {
-		return 1, 2
-	} else if button[7] == "On" {
-		return 1, 3
-	} else if button[8] == "On" {
-		return 2, 0
-	} else if button[9] == "On" {
-		return 2, 1
-	} else if button[10] == "On" {
-		return 2, 2
-	} else if button[11] == "On" {
-		return 2, 3
-	} else if button[12] == "On" {
-		return 3, 0
-	} else if button[13] == "On" {
-		return 3, 1
-	} else if button[14] == "On" {
-		return 3, 2
-	} else if button[15] == "On" {
-		return 3, 3
+	if button[0] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 0
+		keypad.lastColumn = 0
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[0] == "Off" &&
+		keypad.lastRow == 0 &&
+		keypad.lastColumn == 0 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+		// log.Println("button[0] == Off, keypad.inputEnabled = true")
+	}
+
+	if button[1] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 0
+		keypad.lastColumn = 1
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[1] == "Off" &&
+		keypad.lastRow == 0 &&
+		keypad.lastColumn == 1 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+		// log.Println("button[1] == Off, keypad.inputEnabled = true")
+	}
+
+	if button[2] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 0
+		keypad.lastColumn = 2
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[2] == "Off" &&
+		keypad.lastRow == 0 &&
+		keypad.lastColumn == 2 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+		// log.Println("button[2] == Off, keypad.inputEnabled = true")
+	}
+
+	if button[3] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 0
+		keypad.lastColumn = 3
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[3] == "Off" &&
+		keypad.lastRow == 0 &&
+		keypad.lastColumn == 3 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+		// log.Println("button[3] == Off, keypad.inputEnabled = true")
+	}
+
+	if button[4] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 1
+		keypad.lastColumn = 0
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[4] == "Off" &&
+		keypad.lastRow == 1 &&
+		keypad.lastColumn == 0 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+		// log.Println("button[4] == Off, keypad.inputEnabled = true")
+	}
+
+	if button[5] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 1
+		keypad.lastColumn = 1
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[5] == "Off" &&
+		keypad.lastRow == 1 &&
+		keypad.lastColumn == 1 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+		// log.Println("button[5] == Off, keypad.inputEnabled = true")
+	}
+
+	if button[6] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 1
+		keypad.lastColumn = 2
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[6] == "Off" &&
+		keypad.lastRow == 1 &&
+		keypad.lastColumn == 2 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+		// log.Println("button[6] == Off, keypad.inputEnabled = true")
+	}
+
+	if button[7] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 1
+		keypad.lastColumn = 3
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[7] == "Off" &&
+		keypad.lastRow == 1 &&
+		keypad.lastColumn == 3 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+		// log.Println("button[7] == Off, keypad.inputEnabled = true")
+	}
+
+	if button[8] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 2
+		keypad.lastColumn = 0
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[8] == "Off" &&
+		keypad.lastRow == 2 &&
+		keypad.lastColumn == 0 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+		// log.Println("button[8] == Off, keypad.inputEnabled = true")
+	}
+
+	if button[9] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 2
+		keypad.lastColumn = 1
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[9] == "Off" &&
+		keypad.lastRow == 2 &&
+		keypad.lastColumn == 1 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+	}
+
+	if button[10] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 2
+		keypad.lastColumn = 2
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[10] == "Off" &&
+		keypad.lastRow == 2 &&
+		keypad.lastColumn == 2 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+	}
+
+	if button[11] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 2
+		keypad.lastColumn = 3
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[11] == "Off" &&
+		keypad.lastRow == 2 &&
+		keypad.lastColumn == 3 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+	}
+
+	if button[12] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 3
+		keypad.lastColumn = 0
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[12] == "Off" &&
+		keypad.lastRow == 3 &&
+		keypad.lastColumn == 0 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+	}
+
+	if button[13] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 3
+		keypad.lastColumn = 1
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[13] == "Off" &&
+		keypad.lastRow == 3 &&
+		keypad.lastColumn == 1 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+	}
+
+	if button[14] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 3
+		keypad.lastColumn = 2
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[14] == "Off" &&
+		keypad.lastRow == 3 &&
+		keypad.lastColumn == 2 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
+	}
+
+	if button[15] == "On" && keypad.inputEnabled {
+		keypad.inputEnabled = false
+		keypad.lastRow = 3
+		keypad.lastColumn = 3
+
+		return keypad.lastRow, keypad.lastColumn
+	} else if button[15] == "Off" &&
+		keypad.lastRow == 3 &&
+		keypad.lastColumn == 3 &&
+		!keypad.inputEnabled {
+		keypad.inputEnabled = true
 	}
 
 	return -1, -1
@@ -289,22 +528,19 @@ func (keypad *device) GetIndices() (int, int) {
 		// Configure()内でKeypadの値を定義して、GetKey()でとってくる構成の方が楽
 */
 
-var pushFlag bool = false
-
 func (keypad *device) GetKey() string {
-	pushFlag = <-ch
+	mu.Lock()         // muをロックする
+	defer mu.Unlock() // 処理完了したらmuのロック解除
+
 	row, column := keypad.GetIndices()
 
-	if pushFlag {
-		if row == -1 && column == -1 {
-			return "NoKeyPressed"
-		} else {
-			chGetKey <- true // GetKey()を実行したことをrelease関数に通知
-			return keypad.mapping[row][column]
-		}
+	if row == -1 && column == -1 {
+		// log.Println("NoKeyPressed")
+		return "NoKeyPressed"
+	} else {
+		// log.Println("row,column =", row, column)
+		return keypad.mapping[row][column]
 	}
-
-	return "NoKeyPressed"
 }
 
 /*
@@ -345,8 +581,6 @@ func init() {
 
 func TestDevice01(t *testing.T) {
 	// Success
-	ch = make(chan bool)
-	chGetKey = make(chan bool)
 
 	passcode = "5678"
 	keypad := newDevice()
@@ -364,7 +598,8 @@ func TestDevice01(t *testing.T) {
 		for {
 			// 〇秒ごとにTask()を実行（時間の割合で考える）
 			Task() // Repeat GetKey()
-			// ここの処理にかかる時間を設定→
+			// ここの処理にかかる時間を設定→0.1秒
+			time.Sleep(100 * time.Millisecond)
 		}
 	}()
 
@@ -372,16 +607,19 @@ func TestDevice01(t *testing.T) {
 	// correct input (PassCode:5678, Entered:5678)
 	go func() {
 		pushButtonFive()
-		// ボタンを〇秒押し続ける
+		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
 		releaseButtonFive()
 
 		pushButtonSix()
+		time.Sleep(500 * time.Millisecond)
 		releaseButtonSix()
 
 		pushButtonSeven()
+		time.Sleep(500 * time.Millisecond)
 		releaseButtonSeven()
 
 		pushButtonEight()
+		time.Sleep(500 * time.Millisecond)
 		releaseButtonEight()
 
 		time.Sleep(5 * time.Second) // interval until LED turns Off
@@ -393,8 +631,8 @@ func TestDevice01(t *testing.T) {
 
 func TestDevice02(t *testing.T) {
 	// Fail
-	ch = make(chan bool)
-	chGetKey = make(chan bool)
+	// ch = make(chan bool)
+	// chGetKey = make(chan bool)
 
 	passcode = "3210"
 	keypad := newDevice()
@@ -411,6 +649,7 @@ func TestDevice02(t *testing.T) {
 	go func() {
 		for {
 			Task() // Repeat GetKey()
+			time.Sleep(100 * time.Millisecond)
 		}
 	}()
 
@@ -418,15 +657,19 @@ func TestDevice02(t *testing.T) {
 	// wrong input (PassCode:3210, Entered:3212)
 	go func() {
 		pushButtonThree()
+		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
 		releaseButtonThree()
 
 		pushButtonTwo()
+		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
 		releaseButtonTwo()
 
 		pushButtonOne()
+		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
 		releaseButtonOne()
 
 		pushButtonTwo()
+		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
 		releaseButtonTwo()
 
 		time.Sleep(5 * time.Second)
@@ -439,8 +682,8 @@ func TestDevice02(t *testing.T) {
 func TestDevice03(t *testing.T) {
 	// Fail
 	// Press the same button twice in a row
-	ch = make(chan bool)
-	chGetKey = make(chan bool)
+	// ch = make(chan bool)
+	// chGetKey = make(chan bool)
 
 	passcode = "123A"
 	keypad := newDevice()
@@ -457,6 +700,7 @@ func TestDevice03(t *testing.T) {
 	go func() {
 		for {
 			Task() // Repeat GetKey()
+			time.Sleep(100 * time.Millisecond)
 		}
 	}()
 
@@ -464,15 +708,19 @@ func TestDevice03(t *testing.T) {
 	// wrong input (PassCode:123A, Entered:1233)
 	go func() {
 		pushButtonOne()
+		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
 		releaseButtonOne()
 
 		pushButtonTwo()
+		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
 		releaseButtonTwo()
 
 		pushButtonThree()
+		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
 		releaseButtonThree()
 
 		pushButtonThree()
+		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
 		releaseButtonThree()
 
 		time.Sleep(5 * time.Second)
