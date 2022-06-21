@@ -3,6 +3,7 @@
 package pkg
 
 import (
+	"Sm2Go/sample/arduino_lesson/lesson11_driver/library"
 	"log"
 	"sync"
 	"testing"
@@ -59,222 +60,143 @@ func (l *Led) Low() {
 }
 
 var button [16]string = [16]string{"Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off", "Off"}
-var mu sync.Mutex // 排他制御
-
-// var ch chan bool       // pushButtonしたことを通知
-// var chGetKey chan bool // GetKey()により押されたボタンの値を取ったことを通知
 
 // push button
 func pushButtonOne() {
-	mu.Lock()         // muをロックする
-	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[0] = "On"
 }
 
 func pushButtonTwo() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[1] = "On"
 
 }
 
 func pushButtonThree() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[2] = "On"
 }
 
 func pushButtonA() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[3] = "On"
 }
 
 func pushButtonFour() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[4] = "On"
 }
 
 func pushButtonFive() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[5] = "On"
 	// log.Println("button Five On")
-
 }
 
 func pushButtonSix() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[6] = "On"
 	// log.Println("button Six On")
-
 }
 
 func pushButtonB() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[7] = "On"
-
 }
 
 func pushButtonSeven() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[8] = "On"
 	// log.Println("button Seven On")
-
 }
 
 func pushButtonEight() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[9] = "On"
 	// log.Println("button Eight On")
-
 }
 
 func pushButtonNine() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[10] = "On"
-
 }
 
 func pushButtonC() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[11] = "On"
-
 }
 
 func pushButtonAsterisk() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[12] = "On"
-
 }
 
 func pushButtonZero() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[13] = "On"
-
 }
 
 func pushButtonSharp() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[14] = "On"
-
 }
 
 func pushButtonD() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[15] = "On"
-
 }
 
 // releaseButton
 func releaseButtonOne() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[0] = "Off"
 }
 
 func releaseButtonTwo() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[1] = "Off"
 }
 
 func releaseButtonThree() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[2] = "Off"
 }
 
 func releaseButtonA() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[3] = "Off"
 }
 
 func releaseButtonFour() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[4] = "Off"
 }
 
 func releaseButtonFive() {
-	mu.Lock()         // muをロックする
-	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[5] = "Off"
 	// log.Println("button Five Off")
 }
 
 func releaseButtonSix() {
-	mu.Lock()         // muをロックする
-	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[6] = "Off"
 	// log.Println("button Six Off")
 }
 
 func releaseButtonB() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[7] = "Off"
 }
 
 func releaseButtonSeven() {
-	mu.Lock()         // muをロックする
-	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[8] = "Off"
 	// log.Println("button Seven Off")
 }
 
 func releaseButtonEight() {
-	mu.Lock()         // muをロックする
-	defer mu.Unlock() // 処理完了したらmuのロック解除
 	button[9] = "Off"
 	// log.Println("button Eight Off")
 }
 
 func releaseButtonNine() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[10] = "Off"
 }
 
 func releaseButtonC() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[11] = "Off"
 }
 
 func releaseButtonAsterisk() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[12] = "Off"
 }
 
 func releaseButtonZero() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[13] = "Off"
 }
 
 func releaseButtonSharp() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[14] = "Off"
 }
 
 func releaseButtonD() {
-	mu.Lock()
-	defer mu.Unlock()
 	button[15] = "Off"
 }
 
@@ -529,9 +451,6 @@ func (keypad *device) GetIndices() (int, int) {
 */
 
 func (keypad *device) GetKey() string {
-	mu.Lock()         // muをロックする
-	defer mu.Unlock() // 処理完了したらmuのロック解除
-
 	row, column := keypad.GetIndices()
 
 	if row == -1 && column == -1 {
@@ -586,47 +505,54 @@ func TestDevice01(t *testing.T) {
 	keypad := newDevice()
 	keypad.Configure()
 
+	// 構造体のフィールドで1単位あたりの秒数を設定（ユーザが自由に単位を設定できるように）
+	// nano := library.Time{Scale: "nanoSec"}
+	milli := library.Time{Scale: "milliSec"}
+	sec := library.Time{Scale: "sec"}
+
 	ConfigureDevice(led)
 	ConfigureKeypad(keypad)
 	ConfigureLog(logTest)
 
-	var wg sync.WaitGroup
-	wg.Add(1)
+	// var wg sync.WaitGroup
+	// wg.Add(1) // waitGroupがユーザにわかりづらい→syncが見えないように
 
 	// goroutine (base.go Task())
-	go func() {
+	taskLoop := func() {
 		for {
 			// 〇秒ごとにTask()を実行（時間の割合で考える）
 			Task() // Repeat GetKey()
-			// ここの処理にかかる時間を設定→0.1秒
-			time.Sleep(100 * time.Millisecond)
+			milli.Sleep(100)
+			// 1サイクルの中でTask()が締める時間の割合
 		}
-	}()
+	}
 
 	// goroutine (user operation)
 	// correct input (PassCode:5678, Entered:5678)
-	go func() {
+	push := func() {
 		pushButtonFive()
-		time.Sleep(500 * time.Millisecond) // ボタンを0.5秒押し続ける
+		milli.Sleep(500)
 		releaseButtonFive()
 
 		pushButtonSix()
-		time.Sleep(500 * time.Millisecond)
+		milli.Sleep(500)
 		releaseButtonSix()
 
 		pushButtonSeven()
-		time.Sleep(500 * time.Millisecond)
+		milli.Sleep(500)
 		releaseButtonSeven()
 
 		pushButtonEight()
-		time.Sleep(500 * time.Millisecond)
+		milli.Sleep(500)
 		releaseButtonEight()
 
-		time.Sleep(5 * time.Second) // interval until LED turns Off
-		wg.Done()
-	}()
+		sec.Sleep(5) // interval until LED turns Off
+		// wg.Done()    // Goを知らない人にも扱えるように→wg.Done()はノイズ
+	}
 
-	wg.Wait()
+	library.Go(taskLoop, push)
+
+	// wg.Wait()
 }
 
 func TestDevice02(t *testing.T) {
