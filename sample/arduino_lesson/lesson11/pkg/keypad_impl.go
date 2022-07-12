@@ -100,7 +100,7 @@ func keyEnteredCond() bool {
 }
 
 func keyFailedCond() bool {
-	if passcode != entered {
+	if (len(passcode) == len(entered)) && (passcode != entered) {
 		logger.Println("Fail")
 		logger.Println("Entered Passcode:" + entered)
 		entered = ""

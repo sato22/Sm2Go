@@ -1,0 +1,189 @@
+<mxfile host="65bd71144e">
+    <diagram id="kb6ERmdoE3fj__gCxbpV" name="Page-1">
+        <mxGraphModel dx="2031" dy="1022" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="EBAIrEwSQ_sO8G7dM4pI-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-9" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="155" y="-105"/>
+                        </Array>
+                        <mxPoint x="154.99999999999955" y="20" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <object label="" type="initialstate" id="EBAIrEwSQ_sO8G7dM4pI-9">
+                    <mxCell style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;glass=0;sketch=0;fillColor=#000000;" parent="1" vertex="1">
+                        <mxGeometry x="220" y="-120" width="30" height="30" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="OffAlarm" type="state" id="EBAIrEwSQ_sO8G7dM4pI-10">
+                    <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;startSize=23;" parent="1" vertex="1">
+                        <mxGeometry x="-850" y="241.25" width="130" height="87.5" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="UnFasten" type="state" id="EBAIrEwSQ_sO8G7dM4pI-12">
+                    <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;startSize=23;" parent="1" vertex="1">
+                        <mxGeometry x="-270" y="241.25" width="210" height="90" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="EBAIrEwSQ_sO8G7dM4pI-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-19" target="EBAIrEwSQ_sO8G7dM4pI-10" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <object label="" type="note" id="EBAIrEwSQ_sO8G7dM4pI-19">
+                    <mxCell style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;glass=0;sketch=0;fillColor=#ffffff;" parent="1" vertex="1">
+                        <mxGeometry x="-720" y="10" width="80" height="100" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="OnAlarm" type="state" id="2">
+                    <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;startSize=23;" parent="1" vertex="1">
+                        <mxGeometry x="-270" y="460" width="210" height="85" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-12" target="2" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-278" y="432.5" as="targetPoint"/>
+                        <mxPoint x="-278" y="350" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="-217" y="329"/>
+                            <mxPoint x="-217" y="460"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" value="speedSensorOn" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="5" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+                        <mxPoint x="-56" y="5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="2" target="EBAIrEwSQ_sO8G7dM4pI-10" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-585" y="280" as="targetPoint"/>
+                        <mxPoint x="-410" y="428.75" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="-270" y="500"/>
+                            <mxPoint x="-785" y="500"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="8" value="fastenSeatbelt" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="7" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+                        <mxPoint x="-193" y="-91" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" parent="1" source="2" target="EBAIrEwSQ_sO8G7dM4pI-12" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-135" y="420" as="targetPoint"/>
+                        <mxPoint x="-135" y="335" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="-112" y="460"/>
+                            <mxPoint x="-112" y="329"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="10" value="speedSensorOff" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="9" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+                        <mxPoint x="54" y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-12" target="21" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-390" y="420" as="targetPoint"/>
+                        <mxPoint x="-310" y="420" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="-310" y="309"/>
+                            <mxPoint x="-310" y="308"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="12" value="fastenSeatbelt" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="11" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+                        <mxPoint x="-6" y="24" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-10" target="21" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-410" y="286" as="targetPoint"/>
+                        <mxPoint x="-340" y="285" as="sourcePoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="15" value="nothing" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="14" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+                        <mxPoint x="5" y="16" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <object label="GetOut" type="state" id="18">
+                    <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;startSize=23;" parent="1" vertex="1">
+                        <mxGeometry x="-270" y="20" width="210" height="90" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="1" source="EBAIrEwSQ_sO8G7dM4pI-12" target="18" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-219" y="100" as="targetPoint"/>
+                        <mxPoint x="-260" y="295" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="-112" y="180"/>
+                            <mxPoint x="-112" y="180"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="20" value="doorOpened" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="19" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+                        <mxPoint y="-19" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <object label="Fasten" type="state" id="21">
+                    <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;startSize=23;" parent="1" vertex="1">
+                        <mxGeometry x="-580" y="241.25" width="165" height="88.75" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" target="EBAIrEwSQ_sO8G7dM4pI-12" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="40" y="360" as="targetPoint"/>
+                        <mxPoint x="154.99999999999955" y="109.99999999999977" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="155" y="286"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="23" value="nothing" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="22" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+                        <mxPoint x="-3" y="-87" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="18" target="31" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="50" y="65" as="targetPoint"/>
+                        <mxPoint x="-155" y="250" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="-30" y="65"/>
+                            <mxPoint x="-30" y="65"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="25" value="doorClosed" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="24" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+                        <mxPoint x="1" y="19" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="21" target="EBAIrEwSQ_sO8G7dM4pI-12" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-270" y="200" as="targetPoint"/>
+                        <mxPoint x="-430" y="200.625" as="sourcePoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="29" value="unfastenSeatbelt" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="28" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0875" y="1" relative="1" as="geometry">
+                        <mxPoint x="7" y="-15" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <object label="GetIn" type="state" id="31">
+                    <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;startSize=23;" parent="1" vertex="1">
+                        <mxGeometry x="70" y="20" width="210" height="90" as="geometry"/>
+                    </mxCell>
+                </object>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

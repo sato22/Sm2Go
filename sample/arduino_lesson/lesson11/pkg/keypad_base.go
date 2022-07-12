@@ -37,7 +37,7 @@ func Task() {
 			if time3secCond() {
 				current = OffEmpty
 				if debug {
-					logger.Println("State is changed: On to Off")
+					logger.Println("State is changed: On to OffEmpty")
 				}
 				eod = Exit
 			}

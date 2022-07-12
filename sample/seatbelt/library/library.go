@@ -50,3 +50,11 @@ func (t *TestEnv) Go(i time.Duration) {
 func (t *TestEnv) Sleep(h time.Duration) {
 	time.Sleep(h * t.timescale)
 }
+
+func (t *TestEnv) Tick(i time.Duration) <-chan time.Time {
+	return time.Tick(i * t.timescale)
+}
+
+func (t *TestEnv) After(i time.Duration) <-chan time.Time {
+	return time.After(i * t.timescale)
+}
