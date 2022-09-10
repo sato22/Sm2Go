@@ -125,7 +125,7 @@ func init() {
 	if led.current == "High" {
 		current = OnAlarm
 	} else if led.current == "Low" {
-		current = UnFasten
+		current = OnEngine
 	}
 	eod = Entry
 }
@@ -159,13 +159,16 @@ func TestDevice01(t *testing.T) {
 		}
 	})
 
-	// Unfasten → OnAlarm への遷移確認
 	env.Add(library.Done, func() {
-		env.Sleep(time.Second * 10)
+		env.Sleep(time.Second * 3)
 
 		car.FastenSeatbelt()
 
-		env.Sleep(time.Second * 10)
+		env.Sleep(time.Second * 6)
+
+		car.UnFastenSeatbelt()
+
+		env.Sleep(time.Second * 13)
 	})
 
 	env.Go(1)
@@ -189,7 +192,6 @@ func TestDevice02(t *testing.T) {
 	},
 	)
 
-	// // Unfasten → OnAlarm への遷移確認
 	env.Add(library.Done, func() {
 		for i := 0; i < len(car.speedSlice); i++ {
 			env.Sleep(time.Second * 1)
@@ -197,9 +199,8 @@ func TestDevice02(t *testing.T) {
 		}
 	})
 
-	// Unfasten → OnAlarm への遷移確認
 	env.Add(library.Done, func() {
-		env.Sleep(time.Second * 10)
+		env.Sleep(time.Second * 13)
 
 		car.FastenSeatbelt()
 
@@ -208,6 +209,46 @@ func TestDevice02(t *testing.T) {
 		car.UnFastenSeatbelt()
 
 		env.Sleep(time.Second * 10)
+	})
+
+	env.Go(1)
+}
+
+func TestDevice03(t *testing.T) {
+	car := newCar()
+	car.readSpeed()
+
+	ConfigureDevice(led)
+	ConfigureVehicle(car)
+	ConfigureLog(logTest)
+
+	env := library.NewTestEnv() // TestEnv構造体
+
+	env.Add(library.Continue, func() {
+		for {
+			Task()
+			env.Sleep(10 * time.Millisecond)
+		}
+	},
+	)
+
+	env.Add(library.Done, func() {
+		for i := 0; i < len(car.speedSlice); i++ {
+			env.Sleep(time.Second * 1)
+			car.Accelerator()
+		}
+	})
+
+	env.Add(library.Done, func() {
+		env.Sleep(time.Second * 13)
+
+		car.FastenSeatbelt()
+
+		env.Sleep(time.Second * 10)
+
+		car.UnFastenSeatbelt()
+
+		env.Sleep(time.Second * 3)
 	})
 
 	env.Go(1)

@@ -38,6 +38,11 @@ func writePackage(oline []string, name string) []string {
 	oline = append(oline, ")\n")
 	oline = append(oline, "\n")
 
+	oline = append(oline, "const (\n")
+	oline = append(oline, "debug = true\n")
+	oline = append(oline, ")\n")
+	oline = append(oline, "\n")
+
 	return oline
 }
 
@@ -146,6 +151,19 @@ func writePackageEdit(oeline []string, name string) []string {
 	oeline = append(oeline, ")\n")
 	oeline = append(oeline, "\n")
 
+	oeline = append(oeline, "type DebugLogger interface {\n")
+	oeline = append(oeline, "Println(string)\n")
+	oeline = append(oeline, "}\n")
+	oeline = append(oeline, "\n")
+
+	oeline = append(oeline, "var logger DebugLogger\n")
+	oeline = append(oeline, "\n")
+
+	oeline = append(oeline, "func ConfigureLog(p DebugLogger) {\n")
+	oeline = append(oeline, "logger = p\n")
+	oeline = append(oeline, "}\n")
+	oeline = append(oeline, "\n")
+
 	return oeline
 }
 
@@ -203,39 +221,101 @@ func writeTest(otline []string, name string) []string {
 	otline = append(otline, "log.Println(debstr)\n")
 	otline = append(otline, "}\n")
 
-	otline = append(otline, "// goroutine (base.go Task())\n")
-	otline = append(otline, "func TestStateTrans(t *testing.T) {\n")
-	otline = append(otline, "var wg sync.WaitGroup\n")
-	otline = append(otline, "wg.Add(1)\n")
-	otline = append(otline, "go func() {\n")
-	otline = append(otline, "for {\n")
-	otline = append(otline, "time.Sleep(1 * time.Millisecond)\n")
-	otline = append(otline, "Task()\n")
-	otline = append(otline, "}\n")
-	otline = append(otline, "}()\n")
-	otline = append(otline, "wg.Wait()\n")
-	otline = append(otline, "}\n")
+	otline = append(otline, "func TestDevice(t *testing.T) {\n")
+	otline = append(otline, "env := sm2go.NewTestEnv() // TestEnv構造体\n")
 	otline = append(otline, "\n")
 
-	otline = append(otline, "func TestDevice(t *testing.T) {\n")
-	otline = append(otline, "var wg sync.WaitGroup\n")
-	otline = append(otline, "wg.Add(1)\n")
-
 	otline = append(otline, "// goroutine(base.go Task())\n")
-	otline = append(otline, "go func() {\n")
+	otline = append(otline, "env.Add(sm2go.Continue, func() {\n")
 	otline = append(otline, "for {\n")
-	otline = append(otline, "time.Sleep(50 * time.Millisecond)\n")
+	otline = append(otline, "time.Sleep(10 * time.Millisecond)\n")
 	otline = append(otline, "Task()\n")
 	otline = append(otline, "}\n")
+	otline = append(otline, "},\n")
+	otline = append(otline, ")\n")
 
 	otline = append(otline, "// goroutine(user operation)\n")
-	otline = append(otline, "wg.Done()\n")
-	otline = append(otline, "}()\n")
-	otline = append(otline, "wg.Wait()\n")
+	otline = append(otline, "env.Add(sm2go.Done, func() {\n")
+	otline = append(otline, "},\n")
+	otline = append(otline, ")\n")
+	otline = append(otline, "\n")
+
+	otline = append(otline, "env.Set(1)\n")
+	otline = append(otline, "env.Go()\n")
 	otline = append(otline, "}\n")
 	otline = append(otline, "\n")
 
 	return otline
+}
+
+// ------------------------------　sm2go.go　-----------------------------------
+//　ライブラリを生成
+func writeSm(osline []string) []string {
+	osline = append(osline, "package sm2go\n")
+
+	osline = append(osline, "import (\n")
+	osline = append(osline, "\"time\"\n")
+	osline = append(osline, "\"sync\"\n")
+	osline = append(osline, ")\n")
+
+	osline = append(osline, "type Tasktype int\n")
+
+	osline = append(osline, "const (\n")
+	osline = append(osline, "Done Tasktype = iota\n")
+	osline = append(osline, "Continue\n")
+	osline = append(osline, ")\n")
+
+	osline = append(osline, "type TestEnv struct {\n")
+	osline = append(osline, "task      []func()\n")
+	osline = append(osline, "wg        *sync.WaitGroup\n")
+	osline = append(osline, "timescale time.Duration\n")
+	osline = append(osline, "}\n")
+
+	osline = append(osline, "func NewTestEnv() *TestEnv {\n")
+	osline = append(osline, "return &TestEnv{\n")
+	osline = append(osline, "task:      []func(){},\n")
+	osline = append(osline, "wg:        &sync.WaitGroup{},\n")
+	osline = append(osline, "timescale: 1,\n")
+	osline = append(osline, "}\n")
+	osline = append(osline, "}\n")
+
+	osline = append(osline, "func (t *TestEnv) Add(tasktype Tasktype, x func()) {\n")
+	osline = append(osline, "switch tasktype {\n")
+	osline = append(osline, "case Done:\n")
+	osline = append(osline, "t.wg.Add(1)\n")
+	osline = append(osline, "t.task = append(t.task, func() {\n")
+	osline = append(osline, "defer t.wg.Done()\n")
+	osline = append(osline, "x()\n")
+	osline = append(osline, "})\n")
+	osline = append(osline, "case Continue:\n")
+	osline = append(osline, "t.task = append(t.task, x)\n")
+	osline = append(osline, "}\n")
+	osline = append(osline, "}\n")
+
+	osline = append(osline, "func (t *TestEnv) Set(i time.Duration) {\n")
+	osline = append(osline, "t.timescale = i\n")
+	osline = append(osline, "}\n")
+
+	osline = append(osline, "func (t *TestEnv) Go() {\n")
+	osline = append(osline, "for _, x := range t.task {\n")
+	osline = append(osline, "go x()\n")
+	osline = append(osline, "}\n")
+	osline = append(osline, "t.wg.Wait()\n")
+	osline = append(osline, "}\n")
+
+	osline = append(osline, "func (t *TestEnv) Sleep(h time.Duration) {\n")
+	osline = append(osline, "time.Sleep(h * t.timescale)\n")
+	osline = append(osline, "}\n")
+
+	osline = append(osline, "func (t *TestEnv) Tick(i time.Duration) <-chan time.Time {\n")
+	osline = append(osline, "return time.Tick(i * t.timescale)\n")
+	osline = append(osline, "}\n")
+
+	osline = append(osline, "func (t *TestEnv) After(i time.Duration) <-chan time.Time {\n")
+	osline = append(osline, "return time.After(i * t.timescale)\n")
+	osline = append(osline, "}\n")
+
+	return osline
 }
 
 // ------------------------------　main.go　-----------------------------------
@@ -274,10 +354,11 @@ func writeMain(omline []string) []string {
 }
 
 // main.goにて実行する関数
-func WriteAll(data []byte, name string) ([]string, []string, []string, []string) {
+func WriteAll(data []byte, name string) ([]string, []string, []string, []string, []string) {
 	var oline []string
 	var oeline []string
 	var otline []string
+	var osline []string
 	var omline []string
 
 	result := Parse(data)
@@ -292,10 +373,12 @@ func WriteAll(data []byte, name string) ([]string, []string, []string, []string)
 		oeline = writeFunc(oeline, v.States, v.Events)
 		// ------------------------------　model_test.go　-----------------------------------
 		otline = writeTest(otline, name)
+		// ------------------------------　sm2go.go　-----------------------------------
+		osline = writeSm(osline)
 		// ------------------------------　main.go　-----------------------------------
 		omline = writePackageMain(omline)
 		omline = writeMain(omline)
 	}
 
-	return oline, oeline, otline, omline
+	return oline, oeline, otline, omline, osline
 }

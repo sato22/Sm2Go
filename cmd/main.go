@@ -17,11 +17,12 @@ func main() {
 	var oeline []string
 	var otline []string
 	var omline []string
+	var osline []string
 
 	// 入力ファイル（diagrams.netにて作成）の読み込み
 	if *infile != "" {
 		if xml, err := ioutil.ReadFile(*infile); err == nil {
-			oline, oeline, otline, omline = sm2go.WriteAll(xml, os.Args[3])
+			oline, oeline, otline, omline, osline = sm2go.WriteAll(xml, os.Args[3])
 		} else {
 			panic(err)
 		}
@@ -53,6 +54,17 @@ func main() {
 	}
 	defer test.Close()
 
+	// sm2go.go生成
+	if err := os.Mkdir("sm2go", 0777); err != nil {
+		fmt.Println(err)
+	}
+
+	sm, err := os.Create("sm2go/sm2go.go")
+	if err != nil {
+		panic(err)
+	}
+	defer sm.Close()
+
 	// main.go生成
 	main, err := os.Create("main.go")
 	if err != nil {
@@ -82,6 +94,15 @@ func main() {
 	for _, ot := range otline {
 		b := []byte(ot)
 		_, err := test.Write(b)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// sm2go.go
+	for _, os := range osline {
+		b := []byte(os)
+		_, err := sm.Write(b)
 		if err != nil {
 			panic(err)
 		}

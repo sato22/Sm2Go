@@ -11,9 +11,11 @@ const (
 type State int
 
 const (
-	Fasten State = iota
+	OnEngine State = iota
 	UnFasten
 	OnAlarm
+	Fasten
+	Fast
 )
 
 type Eod int
@@ -29,6 +31,32 @@ var current State
 
 func Task() {
 	switch current {
+	case OnEngine:
+		if eod == Entry {
+			onengineEntry()
+			eod = Do
+		}
+		if eod == Do {
+			onengineDo()
+			if unfastenSeatbeltCond() {
+				current = OnAlarm
+				if debug {
+					logger.Println("State is changed: OnEngine to OnAlarm")
+				}
+				eod = Exit
+			}
+			if fastenSeatbeltCond() {
+				current = Fasten
+				if debug {
+					logger.Println("State is changed: OnEngine to Fasten")
+				}
+				eod = Exit
+			}
+		}
+		if eod == Exit {
+			onengineExit()
+			eod = Entry
+		}
 	case UnFasten:
 		if eod == Entry {
 			unfastenEntry()
@@ -37,9 +65,9 @@ func Task() {
 		if eod == Do {
 			unfastenDo()
 			if speedSensorOnCond() {
-				current = OnAlarm
+				current = Fast
 				if debug {
-					logger.Println("State is changed: UnFasten to OnAlarm")
+					logger.Println("State is changed: UnFasten to Fast")
 				}
 				eod = Exit
 			}
@@ -69,16 +97,35 @@ func Task() {
 				}
 				eod = Exit
 			}
+		}
+		if eod == Exit {
+			onalarmExit()
+			eod = Entry
+		}
+	case Fast:
+		if eod == Entry {
+			fastEntry()
+			eod = Do
+		}
+		if eod == Do {
+			fastDo()
 			if speedSensorOffCond() {
 				current = UnFasten
 				if debug {
-					logger.Println("State is changed: OnAlarm to UnFasten")
+					logger.Println("State is changed: Fast to UnFasten")
+				}
+				eod = Exit
+			}
+			if time3secCond() {
+				current = OnAlarm
+				if debug {
+					logger.Println("State is changed: Fast to OnAlarm")
 				}
 				eod = Exit
 			}
 		}
 		if eod == Exit {
-			onalarmExit()
+			fastExit()
 			eod = Entry
 		}
 	case Fasten:
@@ -104,6 +151,6 @@ func Task() {
 }
 
 func init() {
-	current = UnFasten
+	current = OnEngine
 	eod = Entry
 }
