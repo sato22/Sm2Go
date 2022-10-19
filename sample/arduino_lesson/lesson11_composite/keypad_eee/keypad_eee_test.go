@@ -1,6 +1,6 @@
 // This is a test file for testing state transitions
 
-package pkg
+package keypad_eee
 
 import (
 	"Sm2Go/sample/arduino_lesson/lesson11_composite/sm2go"
@@ -79,11 +79,11 @@ func (l DebugStruct) Println(debstr string) {
 // init
 func init() {
 	if led.current == "High" {
-		currentBig = On
+		current = On
 	} else if led.current == "Low" {
-		currentBig = Off
+		current = Off
 	}
-	eodBig = Entry
+	eod = Entry
 	eodSmall = Entry
 }
 
@@ -151,3 +151,42 @@ func TestDevice(t *testing.T) {
 	env.Set(1)
 	env.Go()
 }
+
+// テスト関数は二ついらない．
+// 領域ごとにテスト関数が生成されるようになっているため，修正．
+
+// This is a test file for testing state transitions
+
+// package keypad_easy
+
+// import (
+// "log"
+// "testing"
+// "time"
+// "sync"
+// )
+
+// type DebugStruct struct{}
+// var logTest = DebugStruct{}
+// func (l DebugStruct) Println(debstr string) {
+// log.Println(debstr)
+// }
+// func TestDevice(t *testing.T) {
+// env := sm2go.NewTestEnv() // TestEnv構造体
+
+// // goroutine(base.go Task())
+// env.Add(sm2go.Continue, func() {
+// for {
+// time.Sleep(10 * time.Millisecond)
+// Task()
+// }
+// },
+// )
+// // goroutine(user operation)
+// env.Add(sm2go.Done, func() {
+// },
+// )
+
+// env.Set(1)
+// env.Go()
+// }

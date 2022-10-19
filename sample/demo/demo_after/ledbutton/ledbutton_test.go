@@ -3,7 +3,7 @@
 package ledbutton
 
 import (
-	"Sm2Go/sample/demo/sm2go"
+	"Sm2Go/sample/demo_tyukan/sm2go"
 	"log"
 	"testing"
 	"time"
@@ -48,10 +48,8 @@ func (b Button) Get() bool {
 
 // define struct
 var led = &Led{"led", "Low"}
-var leftButton = &Button{"leftButton", true}
-var rightButton = &Button{"rightButton", true}
+var butt = &Button{"button", true}
 
-//log.Println()
 type DebugStruct struct{}
 
 var logTest = DebugStruct{}
@@ -60,61 +58,36 @@ func (l DebugStruct) Println(debstr string) {
 	log.Println(debstr)
 }
 
-// init
-func init() {
-	if led.current == "High" {
-		current = On
-	} else if led.current == "Low" {
-		current = Off
-	}
-	eod = Entry
-}
-
 func TestDevice(t *testing.T) {
 	ConfigureDevice(led)
-	ConfigureLeftButton(leftButton)
-	ConfigureRightButton(rightButton)
+	ConfigureButton(butt)
 
 	ConfigureLog(logTest)
 
 	env := sm2go.NewTestEnv() // TestEnv構造体
 
-	// goroutine (base.go Task())
+	// goroutine(base.go Task())
 	env.Add(sm2go.Continue, func() {
 		for {
+			time.Sleep(10 * time.Millisecond)
 			Task()
-			env.Sleep(10 * time.Millisecond)
 		}
 	},
 	)
 
-	// goroutine (user operation)
+	// goroutine(user operation)
 	env.Add(sm2go.Done, func() {
-		// leftButtonPush
-		log.Println("----------------leftButtonPush-------------")
-		env.Sleep(1 * time.Second)
-		leftButton.Push()
+		// buttonPush
 		env.Sleep(500 * time.Millisecond)
-		leftButton.Release()
+		butt.Push()
+		env.Sleep(500 * time.Millisecond)
+		butt.Release()
 
-		// rightButtonPush
-		log.Println("----------------rightButtonPush-------------")
-		env.Sleep(1 * time.Second)
-		rightButton.Push()
 		env.Sleep(500 * time.Millisecond)
-		rightButton.Release()
-
-		// leftButtonPush double
-		log.Println("----------------leftButtonPush double-------------")
-		env.Sleep(1 * time.Second)
-		leftButton.Push()
+		butt.Push()
 		env.Sleep(500 * time.Millisecond)
-		leftButton.Release()
-		env.Sleep(1 * time.Second)
-		leftButton.Push()
+		butt.Release()
 		env.Sleep(500 * time.Millisecond)
-		leftButton.Release()
-		env.Sleep(1 * time.Second)
 	},
 	)
 
