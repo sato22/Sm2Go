@@ -21,6 +21,14 @@ const (
 	Off
 )
 
+// 子は
+type StateChild int
+
+const (
+	On StateChild = iota
+	OffEntry
+)
+
 // Entryあたりはこのままでも
 type Eod int
 
@@ -32,6 +40,7 @@ const (
 
 var eod Eod
 var currentState State
+var currentStateChild StateChild
 
 // 出力結果
 // v.States &{On}
@@ -80,7 +89,7 @@ func Step() {
 	case Off:
 		if eod == Entry {
 			offEntry()
-			initChild()
+			InitChild()
 			eod = Do
 		}
 		if eod == Do {
@@ -103,7 +112,50 @@ func Step() {
 	}
 }
 
-func init() {
+func ChildStep() {
+	switch currentStateChild {
+	case OffEmpty:
+		if eod == Entry {
+			offemptyEntry()
+			eod = Do
+		}
+		if eod == Do {
+			offemptyDo()
+			if keyEnteredCond() {
+				currentState = OffEntered
+				if debug {
+					logger.Println("State is changed: OffEmpty to OffEntered")
+				}
+				eod = Exit
+			}
+		}
+		if eod == Exit {
+			offemptyExit()
+			eod = Entry
+		}
+	case OffEntered:
+		if eod == Entry {
+			offenteredEntry()
+			eod = Do
+		}
+		if eod == Do {
+			offenteredDo()
+			if keyFailedCond() {
+				currentState = OffEmpty
+				if debug {
+					logger.Println("State is changed: OffEntered to OffEmpty")
+				}
+				eod = Exit
+			}
+		}
+		if eod == Exit {
+			offenteredExit()
+			eod = Entry
+		}
+	}
+}
+
+func initChild() {
 	currentState = Off
 	eod = Entry
 }

@@ -10,6 +10,16 @@ const (
 	debugTest = false
 )
 
+// mapを作成して，id(3や1などの数字)とラベルを対応させる？
+// 接頭語をつけた hogeState みたいな？型名を定義　接頭語のほうがいい
+// {{.hoge}}State で波括弧内を置き換える
+// ステートマシンごとにファイルを分ける，同じパッケージ内にはある．
+
+// ヒアドキュメントでソースコードは記載．appendはちょっと…．変数が使えない場合は
+// text/templateパッケージを使うと簡単に書けるかも
+
+// [1, 2, 3, ...] = ["top", "child", ...]
+
 func remove(transition_list []*Transition, state_name *State) []*Transition {
 	ret := make([]*Transition, len(transition_list))
 	i := 0
