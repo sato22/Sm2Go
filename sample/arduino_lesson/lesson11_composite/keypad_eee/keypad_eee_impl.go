@@ -42,15 +42,15 @@ func ConfigureLog(p DebugLogger) {
 }
 
 // 別のパッケージで定義
-var Passcode string = "0000"
-var Entered string = ""
+var passcode string = "0000"
+var entered string = ""
 
 const NoKeyPressed = 255
 
 func onEntry() {
 	logger.Println("Success") // loggerを使った出力にする
 	Dev.High()
-	Entered = ""
+	entered = ""
 }
 
 func onDo() {
@@ -79,5 +79,5 @@ func time3secCond() bool {
 }
 
 func correctKeyCond() bool {
-	return Passcode == Entered
+	return passcode == entered
 }

@@ -6,66 +6,56 @@ type ChildState int
 
 const (
 	OffEmpty ChildState = iota
-	OffEntry
+	OffEntered
 )
 
-// // Entryあたりはこのままでも
-// type Eod int
-
-// const (
-// 	Entry Eod = iota
-// 	Do
-// 	Exit
-// )
-
-var childeod Eod
+var childEod Eod
 var currentChildState ChildState
 
 func StepChild() {
 	switch currentChildState {
 	case OffEmpty:
-		if eod == Entry {
-			offEmptyEntry()
-			eod = Do
+		if childEod == Entry {
+			offemptyEntry()
+			childEod = Do
 		}
-		if eod == Do {
-			offEmptyDo()
-			if time3secCond() {
-				currentState = Off
+		if childEod == Do {
+			offemptyDo()
+			if keyEnteredCond() {
+				currentChildState = OffEntered
 				if debug {
-					logger.Println("State is changed: On to Off")
+					logger.Println("State is changed: OffEmpty to OffEntered")
 				}
-				eod = Exit
+				childEod = Exit
 			}
 		}
-		if eod == Exit {
-			offEmptyExit()
-			eod = Entry
+		if childEod == Exit {
+			offemptyExit()
+			childEod = Entry
 		}
-	case OffEntry:
-		if eod == Entry {
-			offEntryEntry()
-			eod = Do
+	case OffEntered:
+		if childEod == Entry {
+			offenteredEntry()
+			childEod = Do
 		}
-		if eod == Do {
-			offEntryDo()
-
-			if correctKeyCond() {
-				currentState = On
+		if childEod == Do {
+			offenteredDo()
+			if keyFailedCond() {
+				currentChildState = OffEmpty
 				if debug {
-					logger.Println("State is changed: Off to On")
+					logger.Println("State is changed: OffEntered to OffEmpty")
 				}
-				eod = Exit
+				childEod = Exit
 			}
 		}
-		if eod == Exit {
-			offEntryExit()
-			eod = Entry
+		if childEod == Exit {
+			offenteredExit()
+			childEod = Entry
 		}
 	}
 }
 
 func initChild() {
 	currentChildState = OffEmpty
-	childeod = Entry
+	childEod = Entry
 }

@@ -84,6 +84,7 @@ func init() {
 		currentState = Off
 	}
 	eod = Entry
+	childEod = Entry
 }
 
 func TestDevice(t *testing.T) {
