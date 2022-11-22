@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="kb6ERmdoE3fj__gCxbpV" name="Page-1">
-        <mxGraphModel dx="1849" dy="944" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1692" dy="725" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -49,12 +49,12 @@
                         </mxGeometry>
                     </mxCell>
                 </object>
-                <object label="Off" type="state" id="EBAIrEwSQ_sO8G7dM4pI-12">
+                <object label="OffEntered" type="state" id="EBAIrEwSQ_sO8G7dM4pI-12">
                     <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;startSize=23;" parent="3" vertex="1">
                         <mxGeometry x="440" y="60" width="160" height="85" as="geometry"/>
                     </mxCell>
                 </object>
-                <object label="On" type="state" id="m3naWr25p_J3Rivu2WGc-2">
+                <object label="OffEmpty" type="state" id="m3naWr25p_J3Rivu2WGc-2">
                     <mxCell style="swimlane;rounded=1;whiteSpace=wrap;html=1;glass=0;sketch=0;startSize=23;" parent="3" vertex="1">
                         <mxGeometry x="150" y="60" width="160" height="85" as="geometry"/>
                     </mxCell>
@@ -95,7 +95,7 @@
                         <mxPoint x="489.9999999999998" y="-20" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="11" value="innerLed" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="3">
+                <mxCell id="11" value="innerLed" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="3" vertex="1">
                     <mxGeometry x="540" y="24.97" width="80" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="6" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="5" target="3" edge="1">
@@ -106,7 +106,7 @@
                         <mxGeometry x="-70" y="-84.97" width="30" height="30" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="10" value="ledOnOff" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="1">
+                <mxCell id="10" value="ledOnOff" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="1" vertex="1">
                     <mxGeometry x="170" y="-4.969999999999999" width="80" height="26" as="geometry"/>
                 </mxCell>
             </root>

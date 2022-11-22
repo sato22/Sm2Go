@@ -315,6 +315,11 @@ func TestSM2Go02(t *testing.T) {
 	var osline []string
 
 	m := map[string]string{"1": "top", "2": "child", "3": "grandchild"}
+	// デフォルトで先頭文字は小文字
+	// 10階層以上ある場合は，「階層が深すぎること」を通知．
+	// m := map[string]string{"1": "one", "2": "two", "3": "three", ...}
+	// 基本的には先頭小文字に
+	//
 
 	if xml, err := ioutil.ReadFile("keypad_easy.drawio"); err == nil {
 		result := Parse(xml)

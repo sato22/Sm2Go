@@ -29,7 +29,7 @@ func main() {
 	pkg.ConfigureLog(logTest)
 
 	for {
-		pkg.Task()
+		pkg.Step()
 		time.Sleep(time.Millisecond * 10)
 	}
 }

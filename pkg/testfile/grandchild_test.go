@@ -1,14 +1,13 @@
 package modelTest
 
+
 // This is a test file for testing state transitions
 
 import (
+	"log"
 	"testing"
 	"time"
-
-	"github.com/sato22/Sm2Go/pkg/testfile/sm2go"
 )
-
 func GrandchildTestDevice(t *testing.T) {
 	env := sm2go.NewTestEnv() // TestEnv構造体
 
@@ -16,7 +15,7 @@ func GrandchildTestDevice(t *testing.T) {
 	env.Add(sm2go.Continue, func() {
 		for {
 			time.Sleep(10 * time.Millisecond)
-			GrandchildStep()
+GrandchildStep()
 
 		}
 	},

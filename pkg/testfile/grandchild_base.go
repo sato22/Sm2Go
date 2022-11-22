@@ -11,7 +11,7 @@ const (
 	OffEmpty
 )
 
-var grandchildeod Eod
+var grandChildEod Eod
 var grandchildCurrentState GrandchildState
 
 func GrandchildStep() {

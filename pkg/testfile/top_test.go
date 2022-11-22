@@ -1,13 +1,12 @@
 package modelTest
 
+
 // This is a test file for testing state transitions
 
 import (
 	"log"
 	"testing"
 	"time"
-
-	"github.com/sato22/Sm2Go/pkg/testfile/sm2go"
 )
 
 type DebugStruct struct{}
@@ -24,7 +23,7 @@ func TopTestDevice(t *testing.T) {
 	env.Add(sm2go.Continue, func() {
 		for {
 			time.Sleep(10 * time.Millisecond)
-			TopStep()
+TopStep()
 
 		}
 	},
@@ -32,8 +31,6 @@ func TopTestDevice(t *testing.T) {
 
 	// goroutine(user operation)
 	env.Add(sm2go.Done, func() {
-		for {
-		}
 	},
 	)
 
