@@ -65,6 +65,28 @@ var ss int = 0
 
 var inputEnabled bool = true
 
+var count int = 0
+
+var chCnt1 chan bool = make(chan bool)
+var chCnt2 chan bool = make(chan bool)
+
+// 1s経過を見る
+func timer1s(ch chan<- bool) {
+	for {
+		time.Sleep(1 * time.Second)
+		ch <- true
+	}
+}
+
+// ボタンが押されたかを見る
+func pushStartStopChan(ch chan<- bool) {
+	for {
+		if !buttonR.Get() {
+			ch <- true
+		}
+	}
+}
+
 func alarmonEntry() {
 	alarm.Beep()
 }
@@ -82,8 +104,14 @@ func countdownEntry() {
 }
 
 func countdownDo() {
-	if buttonR.Get() {
-		time.Sleep(time.Second * 1)
+	// time.Sleepだとイベントがとれない上に一秒が少し遅い　→　カウントアップで一秒をとる
+	count++
+
+	// カウントの目安が厳密でない(一回のfor文で55msかかるとみなした → 1000/55 = 18回を一秒とする)
+	// 実際書き込んでみると少し早かった。イベントの読み取りは問題なく行えた。
+	// タイマー割り込みを利用？
+
+	if count == 18 {
 		ss--
 		if ss == -1 {
 			if mm == 0 {
@@ -95,11 +123,46 @@ func countdownDo() {
 		}
 
 		if ss%2 == 1 {
-			display.PrintVal(fmt.Sprintf("%d : %d", mm, ss))
+			display.PrintVal(fmt.Sprintf("%02d : %02d", mm, ss))
 		} else {
-			display.PrintVal(fmt.Sprintf("%d   %d", mm, ss))
+			display.PrintVal(fmt.Sprintf("%02d   %02d", mm, ss))
 		}
+
+		count = 0
 	}
+
+	// 	go timer1s(chCnt1)
+	// 	go pushStartStopChan(chCnt2)
+
+	// L:
+	// 	for {
+	// 		select {
+	// 		case <-chCnt1:
+	// 			ss--
+	// 			if ss == -1 {
+	// 				if mm == 0 {
+	// 					ss = 0
+	// 				} else {
+	// 					ss = 59
+	// 					mm--
+	// 				}
+	// 			}
+
+	// 			if ss%2 == 1 {
+	// 				display.PrintVal(fmt.Sprintf("%02d : %02d", mm, ss))
+	// 			} else {
+	// 				display.PrintVal(fmt.Sprintf("%02d   %02d", mm, ss))
+	// 			}
+
+	//			if ss == 0 && mm == 0 {
+	//				break L
+	//			}
+	//		case <-chCnt2:
+	//			break L
+	//		default:
+	//			// nothing to do
+	//		}
+	//	}
 }
 
 func countdownExit() {
@@ -116,13 +179,13 @@ func timersetDo() {
 		if mm == 60 {
 			mm = 0
 		}
-		display.PrintVal(fmt.Sprintf("%d : %d", mm, ss))
+		display.PrintVal(fmt.Sprintf("%02d : %02d", mm, ss))
 	} else if !buttonM.Get() {
 		ss++
 		if ss == 60 {
 			ss = 0
 		}
-		display.PrintVal(fmt.Sprintf("%d : %d", mm, ss))
+		display.PrintVal(fmt.Sprintf("%02d : %02d", mm, ss))
 	}
 }
 

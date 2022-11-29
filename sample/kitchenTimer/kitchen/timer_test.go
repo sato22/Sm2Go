@@ -65,7 +65,7 @@ var screen = &Screen{}
 
 var buzzer = &Buzzer{}
 
-func TestDevice(t *testing.T) {
+func TestDevice01(t *testing.T) {
 	env := sm2go.NewTestEnv() // TestEnv構造体
 
 	ConfigureLeftButton(leftButton)
@@ -107,7 +107,7 @@ func TestDevice(t *testing.T) {
 		rightButton.Push()
 		env.Sleep(50 * time.Millisecond)
 		rightButton.Release()
-		env.Sleep(5 * time.Second)
+		env.Sleep(15 * time.Second)
 	},
 	)
 
@@ -138,6 +138,7 @@ func TestDevice02(t *testing.T) {
 	)
 
 	// goroutine(user operation)
+	// alarm ON/OFF
 	env.Add(sm2go.Done, func() {
 		logger.Println("----------------middleButtonPush-------------")
 		env.Sleep(1 * time.Second)
@@ -217,14 +218,14 @@ func TestDevice03(t *testing.T) {
 		logger.Println("----------------rightButtonPush to Start-------------")
 		env.Sleep(1 * time.Second)
 		rightButton.Push()
-		env.Sleep(200 * time.Millisecond)
+		env.Sleep(100 * time.Millisecond)
 		rightButton.Release()
 		env.Sleep(5 * time.Second)
 
 		logger.Println("----------------rightButtonPush to Stop-------------")
 		env.Sleep(1 * time.Second)
 		rightButton.Push()
-		env.Sleep(200 * time.Millisecond)
+		env.Sleep(100 * time.Millisecond)
 		rightButton.Release()
 		env.Sleep(5 * time.Second)
 
