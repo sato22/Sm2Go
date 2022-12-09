@@ -1,4 +1,3 @@
-
 // main file
 
 package main
@@ -17,7 +16,8 @@ func (l DebugStruct) Println(debstr string) {
 
 func main() {
 	for {
-modelTestTopStep()
+		// [package名]TopStep()
+		modelTestTopStep()
 
 		time.Sleep(time.Millisecond * 10)
 	}
