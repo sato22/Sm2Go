@@ -1,3 +1,3 @@
-module github.com/sato22/Sm2Go
+module Sm2Go
 
-go 1.17
+go 1.19

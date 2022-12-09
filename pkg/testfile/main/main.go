@@ -17,7 +17,8 @@ func (l DebugStruct) Println(debstr string) {
 
 func main() {
 	for {
-		Task()
-		time.sleep(time.Millisecond * 10)
+modelTestTopStep()
+
+		time.Sleep(time.Millisecond * 10)
 	}
 }

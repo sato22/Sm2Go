@@ -10,30 +10,6 @@ const (
 	debugTest = false
 )
 
-// mapを作成して，id(3や1などの数字)とラベルを対応させる？
-// 接頭語をつけた hogeState みたいな？型名を定義　接頭語のほうがいい
-// {{.hoge}}State で波括弧内を置き換える
-// ステートマシンごとにファイルを分ける，同じパッケージ内にはある．
-
-// ヒアドキュメントでソースコードは記載．appendはちょっと…．変数が使えない場合は
-// text/templateパッケージを使うと簡単に書けるかも
-
-// [1, 2, 3, ...] = ["top", "child", ...]
-
-func remove(transition_list []*Transition, state_name *State) []*Transition {
-	ret := make([]*Transition, len(transition_list))
-	i := 0
-
-	for _, transition := range transition_list {
-		if state_name != transition.Src {
-			ret[i] = transition
-			i++
-		}
-	}
-
-	return ret[:i]
-}
-
 // ------------------------------　hogehoge_base.go　-----------------------------------
 
 func writePackage(oline []string, name string, count int) []string {
@@ -97,50 +73,62 @@ func writeEnum(oline []string, state_list []*State, m map[string]string, key str
 	return oline
 }
 
+// writeStep()関数にて使用
+func writeEvent(oline []string, transition_list []*Transition, m map[string]string, key string, state_name *State) []string {
+	// 遷移条件を列挙
+	for _, transition := range transition_list {
+		if state_name == transition.Src {
+			oline = append(oline, fmt.Sprintf("if %sCond() {\n", transition.Event.Name))
+			oline = append(oline, fmt.Sprintf("%sCurrentState = %s\n", m[key], transition.Dest.Name))
+			oline = append(oline, fmt.Sprintf("if debug {\n"))
+			oline = append(oline, fmt.Sprintf("logger.Println(\"State is changed: %s to %s\")\n", transition.Src.Name, transition.Dest.Name))
+			oline = append(oline, fmt.Sprintf("}\n"))
+			oline = append(oline, fmt.Sprintf("%seod = Exit\n", m[key]))
+			oline = append(oline, "}\n") // if event_Cond()
+		}
+	}
+
+	return oline
+}
+
+// writeStep()関数にて使用
+func writeCase(oline []string, transition_list []*Transition, transition *Transition, m map[string]string, key string, state_name *State) []string {
+	oline = append(oline, fmt.Sprintf("case %s:\n", transition.Src.Name))
+	// Entry状態での動作を記述
+	oline = append(oline, fmt.Sprintf("if %seod == Entry {\n", m[key]))
+	oline = append(oline, fmt.Sprintf("%sEntry()\n", strings.ToLower(transition.Src.Name)))
+	oline = append(oline, fmt.Sprintf("%seod = Do\n", m[key]))
+	oline = append(oline, "}\n") // if eod == Entry
+
+	// Do状態での動作を記述
+	oline = append(oline, fmt.Sprintf("if %seod == Do {\n", m[key]))
+	oline = append(oline, fmt.Sprintf("%sDo()\n", strings.ToLower(transition.Src.Name)))
+	// 遷移条件の記述
+	oline = writeEvent(oline, transition_list, m, key, state_name)
+
+	oline = append(oline, "}\n") // if eod == Do
+
+	// Exit状態での動作を記述
+	oline = append(oline, fmt.Sprintf("if %seod == Exit {\n", m[key]))
+	oline = append(oline, fmt.Sprintf("%sExit()\n", strings.ToLower(transition.Src.Name)))
+	oline = append(oline, fmt.Sprintf("%seod = Entry\n", m[key]))
+	oline = append(oline, "}\n") // if eod == Exit
+
+	return oline
+}
+
 // task関数の生成
-func writeEvent(oline []string, transition_list []*Transition, m map[string]string, key string) []string {
+func writeStep(oline []string, transition_list []*Transition, m map[string]string, key string) []string {
 	// 状態ごとの関数を作成
 	oline = append(oline, fmt.Sprintf("func %sStep() {\n", strings.Title(m[key])))
 	oline = append(oline, fmt.Sprintf("switch %sCurrentState {\n", m[key]))
 
+	var state_name *State
+
 	for _, transition := range transition_list {
-		state_name := transition.Src
-		if state_name == transition.Src {
-			oline = append(oline, fmt.Sprintf("case %s:\n", transition.Src.Name))
-			// Entry状態での動作を記述
-			oline = append(oline, fmt.Sprintf("if %seod == Entry {\n", m[key]))
-			oline = append(oline, fmt.Sprintf("%sEntry()\n", strings.ToLower(transition.Src.Name)))
-			oline = append(oline, fmt.Sprintf("%seod = Do\n", m[key]))
-			oline = append(oline, "}\n") // if eod == Entry
-
-			// Do状態での動作を記述
-			oline = append(oline, fmt.Sprintf("if %seod == Do {\n", m[key]))
-			oline = append(oline, fmt.Sprintf("%sDo()\n", strings.ToLower(transition.Src.Name)))
-			// 遷移条件を列挙
-			for _, transition := range transition_list {
-				if state_name == transition.Src {
-					oline = append(oline, fmt.Sprintf("if %sCond() {\n", transition.Event.Name))
-					oline = append(oline, fmt.Sprintf("%sCurrentState = %s\n", m[key], transition.Dest.Name))
-					oline = append(oline, fmt.Sprintf("if debug {\n"))
-					oline = append(oline, fmt.Sprintf("logger.Println(\"State is changed: %s to %s\")\n", transition.Src.Name, transition.Dest.Name))
-					oline = append(oline, fmt.Sprintf("}\n"))
-					oline = append(oline, fmt.Sprintf("%seod = Exit\n", m[key]))
-					oline = append(oline, "}\n") // if event_Cond()
-				}
-			}
-
-			oline = append(oline, "}\n") // if eod == Do
-
-			// Exit状態での動作を記述
-			oline = append(oline, fmt.Sprintf("if %seod == Exit {\n", m[key]))
-			oline = append(oline, fmt.Sprintf("%sExit()\n", strings.ToLower(transition.Src.Name)))
-			oline = append(oline, fmt.Sprintf("%seod = Entry\n", m[key]))
-			oline = append(oline, "}\n") // if eod == Exit
-
-			transition_list = remove(transition_list, state_name) // 表示したtransitionをリストから削除
-			if len(transition_list) == 0 {
-				break
-			}
+		if state_name != transition.Src {
+			state_name = transition.Src
+			oline = writeCase(oline, transition_list, transition, m, key, state_name)
 		}
 	}
 	oline = append(oline, "}\n") // switch state
@@ -231,7 +219,7 @@ func writeFunc(oeline []string, state_list []*State, event_list []*Event) []stri
 	return oeline
 }
 
-// ------------------------------　hogehoge_test.go　-----------------------------------
+// ------------------------------ hogehoge_test.go -----------------------------------
 // テストファイルを生成
 func writeTest(otline []string, name string, m map[string]string, key string, count int) []string {
 	otline = append(otline, fmt.Sprintf("package %s\n", name))
@@ -259,7 +247,7 @@ func (l DebugStruct) Println(debstr string) {
 `)
 	}
 
-	otline = append(otline, fmt.Sprintf("func %sTestDevice(t *testing.T) {", strings.Title(m[key])))
+	otline = append(otline, "func TestDevice(t *testing.T) {")
 	otline = append(otline, `
 	env := sm2go.NewTestEnv() // TestEnv構造体
 
@@ -290,7 +278,7 @@ func (l DebugStruct) Println(debstr string) {
 }
 
 // ------------------------------　sm2go.go　-----------------------------------
-//　ライブラリを生成
+// 　ライブラリを生成
 func writeSm(osline []string) []string {
 	osline = append(osline, `
 package sm2go
@@ -362,7 +350,7 @@ func (t *TestEnv) After(i time.Duration) <-chan time.Time {
 }
 
 // ------------------------------　main.go　-----------------------------------
-func writeMain(omline []string) []string {
+func writeMain(omline []string, name string, m map[string]string, key string) []string {
 	omline = append(omline, `
 // main file
 
@@ -382,8 +370,11 @@ func (l DebugStruct) Println(debstr string) {
 
 func main() {
 	for {
-		Task()
-		time.sleep(time.Millisecond * 10)
+`)
+
+	omline = append(omline, fmt.Sprintf("%s%sStep()\n", name, strings.Title(m[key])))
+	omline = append(omline, `
+		time.Sleep(time.Millisecond * 10)
 	}
 }
 `)
@@ -402,7 +393,7 @@ func WriteAll(data []byte, name string, key string, v *StateMachine, m map[strin
 	// ------------------------------　model_base.go　-----------------------------------
 	oline = writePackage(oline, name, count)
 	oline = writeEnum(oline, v.States, m, key, count)
-	oline = writeEvent(oline, v.Transitions, m, key)
+	oline = writeStep(oline, v.Transitions, m, key)
 	oline = writeInit(oline, v.Initial, m, key)
 	// ------------------------------　model_impl.go　-----------------------------------
 	oeline = writePackageEdit(oeline, name, count)
@@ -412,7 +403,7 @@ func WriteAll(data []byte, name string, key string, v *StateMachine, m map[strin
 	// ------------------------------　sm2go.go　-----------------------------------
 	osline = writeSm(osline)
 	// ------------------------------　main.go　-----------------------------------
-	omline = writeMain(omline)
+	omline = writeMain(omline, name, m, key)
 
 	return oline, oeline, otline, omline, osline
 }

@@ -4,7 +4,6 @@ package modelTest
 
 // package name to import
 
-// constは別ファイル
 const (
 	debug = true
 )
@@ -12,74 +11,112 @@ const (
 type TopState int
 
 const (
-	// 親と子で状態名が被らないよう，{接頭語}Onなどで記載
-	On TopState = iota
-	Off
+	AlarmOn TopState = iota
+	Countdown
+	TimerSet
+	NotSet
 )
 
-// Eodは別ファイル
 type Eod int
 
-// constは別ファイル
 const (
-	entry Eod = iota
-	do
-	exit
+	Entry Eod = iota
+	Do
+	Exit
 )
 
-// 接頭語の先頭文字は小文字で（同じパッケージ下にあるため．）
 var topeod Eod
 var topCurrentState TopState
 
-// main関数やテスト関数で使用するグローバル関数を1つ
-func Step() {
-	topStep()
-}
-
-func topStep() {
+func TopStep() {
 	switch topCurrentState {
-	case On:
+	case AlarmOn:
 		if topeod == Entry {
-			onEntry()
+			alarmonEntry()
 			topeod = Do
 		}
 		if topeod == Do {
-			onDo()
-			if time3secCond() {
-				topCurrentState = Off
+			alarmonDo()
+			if pushStartStopButtonCond() {
+				topCurrentState = NotSet
 				if debug {
-					logger.Println("State is changed: On to Off")
+					logger.Println("State is changed: AlarmOn to NotSet")
 				}
 				topeod = Exit
 			}
 		}
 		if topeod == Exit {
-			onExit()
+			alarmonExit()
 			topeod = Entry
 		}
-	case Off:
+	case Countdown:
 		if topeod == Entry {
-			offEntry()
+			countdownEntry()
 			topeod = Do
 		}
 		if topeod == Do {
-			offDo()
-			if correctKeyCond() {
-				topCurrentState = On
+			countdownDo()
+			if countdownEndCond() {
+				topCurrentState = AlarmOn
 				if debug {
-					logger.Println("State is changed: Off to On")
+					logger.Println("State is changed: Countdown to AlarmOn")
+				}
+				topeod = Exit
+			}
+			if pushStartStopButtonCond() {
+				topCurrentState = TimerSet
+				if debug {
+					logger.Println("State is changed: Countdown to TimerSet")
 				}
 				topeod = Exit
 			}
 		}
 		if topeod == Exit {
-			offExit()
+			countdownExit()
+			topeod = Entry
+		}
+	case TimerSet:
+		if topeod == Entry {
+			timersetEntry()
+			topeod = Do
+		}
+		if topeod == Do {
+			timersetDo()
+			if pushStartStopButtonCond() {
+				topCurrentState = Countdown
+				if debug {
+					logger.Println("State is changed: TimerSet to Countdown")
+				}
+				topeod = Exit
+			}
+		}
+		if topeod == Exit {
+			timersetExit()
+			topeod = Entry
+		}
+	case NotSet:
+		if topeod == Entry {
+			notsetEntry()
+			topeod = Do
+		}
+		if topeod == Do {
+			notsetDo()
+			if pushTimerButtonCond() {
+				topCurrentState = TimerSet
+				if debug {
+					logger.Println("State is changed: NotSet to TimerSet")
+				}
+				topeod = Exit
+			}
+		}
+		if topeod == Exit {
+			notsetExit()
 			topeod = Entry
 		}
 	}
 }
 
 func init() {
-	topCurrentState = Off
+	topCurrentState = NotSet
 	topeod = Entry
 }
